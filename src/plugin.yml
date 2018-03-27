@@ -1,0 +1,5 @@
+name: WorldManagement
+main: crytec.worldmanagement.Worldmanagement
+version: 2.1.3
+author: crysis992
+description: CryTec World Management Plugin
