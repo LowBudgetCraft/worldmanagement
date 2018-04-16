@@ -10,6 +10,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import crytec.worldmanagement.data.CWorldType;
 import net.crytec.api.InventoryMenuAPI.InvGUI;
 import net.crytec.api.InventoryMenuAPI.InvGUI.ROWS;
 import net.crytec.api.InventoryMenuAPI.MenuCloseEvent;

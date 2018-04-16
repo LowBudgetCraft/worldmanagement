@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import crytec.worldmanagement.data.WorldConfiguration;
 import net.crytec.api.util.F;
 
 public class Worldmanagement extends JavaPlugin implements Listener {

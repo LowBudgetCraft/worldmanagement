@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import crytec.worldmanagement.guis.Menus;
 import net.crytec.api.devin.commands.Command;
 import net.crytec.api.devin.commands.CommandResult;
 import net.crytec.api.devin.commands.Commandable;
@@ -17,35 +18,8 @@ public class WorldCommands implements Commandable {
 	@Command(struct = "wm", perms = "wm.admin", desc = "Öffnet das Interface")
 	public CommandResult wmInterface(Player sender) {
 		
-		sender.sendMessage(F.error("~ Interface coming soon ~"));
-		
-//		InvGUI gui = new InvGUI(Worldmanagement.getInstance(), sender, "World Management", ROWS.ROW_4);
-//		Worldmanagement plugin = Worldmanagement.getInstance();
-//		
-//		
-//		
-//		for (World world : Bukkit.getWorlds()) {
-//
-//			if (plugin.getWorldConfig(world) == null) {
-//				gui.addItem(new ItemBuilder(Material.SIGN).name("§eStandardwelt")
-//						.lore("§cDiese Welt kann mit diesem Plugin").lore("§cnicht gelöscht oder bearbeitet werden.")
-//						.build());
-//				continue;
-//			}
-//
-//			WorldConfiguration config = plugin.getWorldConfig(world);
-//
-//			gui.addItem(new ItemBuilder(Material.WOOL).name(ChatColor.GRAY + world.getName())
-//
-//					.lore("").lore("")
-//
-//					.lore(C.cGray + "§aLinksklick§7 um dich in diese Welt zu")
-//					.lore(C.cGray + "teleportieren. §aRechtsklick§7 um die").lore(C.cGray + "Einstellungen zu öffnen.")
-//					.build());
-//		}
-//		
-//		gui.addItem(new ItemBuilder(Material.WOOL).durability(13).name(C.cDGreen + "Welt erstellen.").build(), 27);
-//		gui.openInventory();
+		sender.sendMessage(F.error("Dieses Interface wird aktuell überarbeitet. Einige Funktionen sind nicht verfügbar."));
+		Menus.WORLD_MAIN_MENU.open(sender);
 		return CommandResult.success();
 	}
 	

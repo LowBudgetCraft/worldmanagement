@@ -43,7 +43,7 @@ public class MenuListener implements Listener {
 			
 			e.getPlayer().sendTitle("§aInfo", "Tippe einen Weltnamen ein.", 20, 800, 20);
 			
-			ChatStringInput.input.addPlayer(e.getPlayer(), worldname -> {
+			ChatStringInput.addPlayer(e.getPlayer(), worldname -> {
 				World w = Bukkit.getWorld(worldname.toLowerCase());
 				if (w != null) {
 					e.getPlayer().sendMessage(F.error("Diese Welt exsistiert bereits."));
@@ -51,7 +51,7 @@ public class MenuListener implements Listener {
 					return;
 				} else {
 					e.getPlayer().sendTitle("§aInfo", "§7Tippe einen Weltgenerator ein, '§6none' §7für keinen.", 20, 800, 20);
-					ChatStringInput.input.addPlayer(e.getPlayer(), generator -> {
+					ChatStringInput.addPlayer(e.getPlayer(), generator -> {
 						new WorldImportInterface(e.getPlayer(), generator, worldname);
 						e.getPlayer().resetTitle();
 					});

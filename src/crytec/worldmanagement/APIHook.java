@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 
 import net.crytec.api.devin.commands.CommandRegistrar;
-import net.crytec.api.util.C;
+import net.md_5.bungee.api.ChatColor;
 
 public class APIHook implements Listener {
 
@@ -15,7 +15,7 @@ public class APIHook implements Listener {
 	@EventHandler
 	public void onPluginLoad(PluginEnableEvent e) {
 		if (e.getPlugin().getName().equals("CT-Core")) {
-			Bukkit.getServer().getConsoleSender().sendMessage(C.cAqua + "Enabling CT-Core support..");
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "Enabling CT-Core support..");
 			cr = new CommandRegistrar(Worldmanagement.getInstance());
 			cr.registerCommands(new WorldCommands());
 			cr.registerHelpCommands();

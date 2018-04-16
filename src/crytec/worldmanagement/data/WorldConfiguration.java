@@ -1,4 +1,4 @@
-package crytec.worldmanagement;
+package crytec.worldmanagement.data;
 
 import org.bukkit.Difficulty;
 import org.bukkit.World.Environment;

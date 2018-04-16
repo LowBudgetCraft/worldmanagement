@@ -1,4 +1,4 @@
-package crytec.worldmanagement;
+package crytec.worldmanagement.data;
 
 public enum CWorldType {
 	
