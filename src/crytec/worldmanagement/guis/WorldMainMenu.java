@@ -27,16 +27,8 @@ public class WorldMainMenu implements InventoryProvider {
 		Pagination pagination = content.pagination();
 		ArrayList<ClickableItem> items = new ArrayList<ClickableItem>();
 		
-		for (World world : Bukkit.getWorlds()) {
-			if (Worldmanagement.getInstance().getWorldConfig(world) == null) {
-				items.add(ClickableItem.empty(new ItemBuilder(Material.SIGN)
-					.name("§eStandardwelt")
-					.lore("§cDiese Welt kann mit diesem Plugin").lore("§cnicht gelöscht oder bearbeitet werden.")
-					.build()));
-				continue;
-			}
-			
-			items.add(ClickableItem.of(new ItemBuilder(Material.WOOL).name(ChatColor.GRAY + world.getName())
+		for (World world : Bukkit.getWorlds()) {			
+			items.add(ClickableItem.of(new ItemBuilder(Material.WHITE_WOOL).name(ChatColor.GRAY + world.getName())
 					.lore("").lore("")
 					.lore("§aLinksklick§7 um dich in diese Welt zu")
 					.lore("§7teleportieren. §aRechtsklick§7 um die")
@@ -46,7 +38,8 @@ public class WorldMainMenu implements InventoryProvider {
 					player.teleport(world.getSpawnLocation());
 					player.sendMessage(F.main("WorldManagement", "Du wurdest an den Spawnpunkt der Welt " + F.name(world.getName()) + " teleportiert."));
 				} else if (click.getClick() == ClickType.RIGHT) {
-					// Open Settings
+								System.out.println("Settings");
+								Menus.WORLD_SETTINGS.open(player, new String[] { "world" }, new Object[] { world.getName() });
 				} else return;
 			}));
 		}
@@ -75,14 +68,7 @@ public class WorldMainMenu implements InventoryProvider {
 						Menus.ENV_MENU.open(player, new String[] {"worldname", "generator"  }, new String[] { result, generator });
 					});
 				}
-			});
-			
-			
-			// Welt namen
-			// Setting Interface
-			// Generator Namen
-			// Create
-			
+			});			
 		}));
 		pagination.addToIterator(content.newIterator(Type.HORIZONTAL, 0, 0));
 	}

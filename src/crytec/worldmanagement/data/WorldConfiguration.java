@@ -4,6 +4,9 @@ import org.bukkit.Difficulty;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class WorldConfiguration {
 	
 	
@@ -17,6 +20,9 @@ public class WorldConfiguration {
 	private boolean animalspawn = true;
 	private Difficulty difficulty = Difficulty.NORMAL;
 	private boolean keepSpawnLoaded = true;
+	
+	@Getter @Setter
+	private boolean enabled = true;
 	
 	
 	public WorldConfiguration(String world, String environment, WorldType type, String generator) {

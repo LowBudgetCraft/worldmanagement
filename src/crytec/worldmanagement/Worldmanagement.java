@@ -45,8 +45,14 @@ public class Worldmanagement extends JavaPlugin implements Listener {
 	public void onEnable() {
 		this.loadWorldConfigurations();
 		Bukkit.getPluginManager().registerEvents(this, this);
-		Bukkit.getPluginManager().registerEvents(new APIHook(), this);
 		initializeWorlds();
+	}
+	
+	@Override
+	public void onDisable() {
+		for (World world : Bukkit.getWorlds()) {
+			this.saveWorldConfig(world);
+		}
 	}
 
 	public static Worldmanagement getInstance() {
@@ -317,6 +323,13 @@ public class Worldmanagement extends JavaPlugin implements Listener {
 					cfg.save(file);
 				}
 				
+				if (cfg.isSet("enabled")) {
+					config.setEnabled(cfg.getBoolean("enabled"));
+				} else {
+					cfg.set("enabled", true);
+					cfg.save(file);
+				}
+				
 				if (cfg.isSet("keepspawnloaded")) {
 					config.setKeepSpawnLoaded(cfg.getBoolean("keepspawnloaded"));
 				} else {
@@ -333,7 +346,9 @@ public class Worldmanagement extends JavaPlugin implements Listener {
 
 	private void initializeWorlds() {
 		for (WorldConfiguration cfg : this.worldconfigs.values()) {
-			this.loadWorld(cfg.getWorldName(), cfg.getEnvironment(), cfg.getWorldType(), cfg.getGenerator());
+			if (cfg.isEnabled()) {
+				this.loadWorld(cfg.getWorldName(), cfg.getEnvironment(), cfg.getWorldType(), cfg.getGenerator());
+			}
 		}
 	}
 
@@ -355,6 +370,34 @@ public class Worldmanagement extends JavaPlugin implements Listener {
 				this.log.info("Difficulty: " + world.getDifficulty().name());
 			}
 
+		}
+	}
+	
+	public void saveWorldConfig(World world) {
+		WorldConfiguration config = this.getWorldConfig(world);
+		if (config == null) return;
+		
+		config.setAnimalSpawn(world.getAllowAnimals());
+		config.setMonsterSpawn(world.getAllowMonsters());
+		config.setDifficulty(world.getDifficulty());
+		config.setPvPEnabled(world.getPVP());
+		config.setKeepSpawnLoaded(world.getKeepSpawnInMemory());
+		
+		File f = new File(getDataFolder() + File.separator + "worlds" + File.separator + world.getName() + ".yml");
+		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(f);
+		
+		cfg.set("monsterspawn", config.isMobSpawnEnabled());
+		cfg.set("animalspawn", config.isAnimalSpawnEnabled());
+		cfg.set("difficulty", config.getDifficulty().toString());
+		cfg.set("pvp", config.isPvPEnabled());
+		cfg.set("keepspawnloaded", config.keepSpawnLoaded());
+		cfg.set("enabled", config.isEnabled());
+		
+		try {
+			this.log.info("Saved configuration for World " + world.getName() + " to disk!");
+			cfg.save(f);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
