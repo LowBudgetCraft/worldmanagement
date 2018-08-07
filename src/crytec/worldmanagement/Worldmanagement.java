@@ -45,6 +45,7 @@ public class Worldmanagement extends JavaPlugin implements Listener {
 	public void onEnable() {
 		this.loadWorldConfigurations();
 		Bukkit.getPluginManager().registerEvents(this, this);
+		this.getCommand("worldmanagement").setExecutor(new WorldCommands());
 		initializeWorlds();
 	}
 	

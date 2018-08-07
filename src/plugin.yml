@@ -5,9 +5,9 @@ author: crysis992
 description: CryTec World Management Plugin
 api-version: 1.13
 
- commands:
-   worldmanagement:
-     description: Access to WorldManagement Commands
-     aliases: [wm]
-     permission: worldmanagement.admin
-     usage: Syntax error! Simply type /&lt;command&gt;
+commands:
+    worldmanagement:
+        description: Access to WorldManagement Commands
+        aliases: [wm]
+        permission: worldmanagement.admin
+        usage: Syntax error! Simply type /&lt;command&gt;
