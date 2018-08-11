@@ -44,7 +44,6 @@ public class EnvironmentMenu implements InventoryProvider {
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
 			Worldmanagement.getInstance().createNewWorld(name, Environment.THE_END, WorldType.NORMAL, content.property("generator"));
-			
 		}));
 
 		

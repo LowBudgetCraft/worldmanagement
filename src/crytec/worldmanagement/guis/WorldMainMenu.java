@@ -15,6 +15,7 @@ import net.crytec.api.smartInv.ClickableItem;
 import net.crytec.api.smartInv.content.InventoryContents;
 import net.crytec.api.smartInv.content.InventoryProvider;
 import net.crytec.api.smartInv.content.Pagination;
+import net.crytec.api.smartInv.content.SlotPos;
 import net.crytec.api.smartInv.content.SlotIterator.Type;
 import net.crytec.api.util.ChatStringInput;
 import net.crytec.api.util.F;
@@ -38,7 +39,6 @@ public class WorldMainMenu implements InventoryProvider {
 					player.teleport(world.getSpawnLocation());
 					player.sendMessage(F.main("WorldManagement", "Du wurdest an den Spawnpunkt der Welt " + F.name(world.getName()) + " teleportiert."));
 				} else if (click.getClick() == ClickType.RIGHT) {
-								System.out.println("Settings");
 								Menus.WORLD_SETTINGS.open(player, new String[] { "world" }, new Object[] { world.getName() });
 				} else return;
 			}));
@@ -70,6 +70,28 @@ public class WorldMainMenu implements InventoryProvider {
 				}
 			});			
 		}));
+		
+		content.set(SlotPos.of(3, 5), ClickableItem.of(new ItemBuilder(Material.PAPER).name("§2Welt laden").build(), e -> {
+			
+			player.sendMessage(F.main("WorldManagement", "Bitte gebe einen Weltnamen ein:"));
+			ChatStringInput.addPlayer(player, result -> {
+				if (Worldmanagement.getInstance().doesWorldexsists(result)) {
+					player.sendMessage(F.error("Es existiert kein Weltordner mit diesem Namen!"));
+					return;
+				} else {
+					player.sendMessage(F.main("WorldManagement", "Bitte gebe einen Generator ein, benutze " + F.name("none") + " um diesen Schritt zu überspringen."));
+					ChatStringInput.addPlayer(player, generator -> {
+						if (generator.equalsIgnoreCase("none")) {
+							player.sendMessage("§4>> §7Übersprungen");
+						}
+						Menus.ENV_MENU.open(player, new String[] {"worldname", "generator"  }, new String[] { result, generator });
+					});
+				}
+			});
+			
+			
+		}));
+		
 		pagination.addToIterator(content.newIterator(Type.HORIZONTAL, 0, 0));
 	}
 
