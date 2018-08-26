@@ -22,4 +22,10 @@ public class Menus {
 			.size(1, 9)
 			.title("Wähle die Umgebung")
 			.build();
+	
+	public static final SmartInventory DELETE_CONFIRM = SmartInventory.builder().id("wm.deleteConfirm")
+				.provider(new WorldDeleteConfirm())
+				.size(3, 9)
+				.title("Endgültiges löschen bestätigen")
+				.build();
 }

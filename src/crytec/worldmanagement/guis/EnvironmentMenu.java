@@ -1,5 +1,6 @@
 package crytec.worldmanagement.guis;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
@@ -23,7 +24,10 @@ public class EnvironmentMenu implements InventoryProvider {
 			String name = content.property("worldname");
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
-			Worldmanagement.getInstance().createNewWorld(name, Environment.NORMAL, WorldType.NORMAL, content.property("generator"));
+			Bukkit.getScheduler().runTask(Worldmanagement.getInstance(), () -> {
+				Worldmanagement.getInstance().createNewWorld(name, Environment.NORMAL, WorldType.NORMAL, content.property("generator"));
+			});
+			
 			
 		}));
 		
@@ -33,7 +37,10 @@ public class EnvironmentMenu implements InventoryProvider {
 			String name = content.property("worldname");
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
-			Worldmanagement.getInstance().createNewWorld(name, Environment.NETHER, WorldType.NORMAL, content.property("generator"));
+			Bukkit.getScheduler().runTask(Worldmanagement.getInstance(), () -> {
+				Worldmanagement.getInstance().createNewWorld(name, Environment.NETHER, WorldType.NORMAL, content.property("generator"));
+			});
+			
 			
 		}));
 		
@@ -43,7 +50,10 @@ public class EnvironmentMenu implements InventoryProvider {
 			String name = content.property("worldname");
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
-			Worldmanagement.getInstance().createNewWorld(name, Environment.THE_END, WorldType.NORMAL, content.property("generator"));
+			Bukkit.getScheduler().runTask(Worldmanagement.getInstance(), () -> {
+				Worldmanagement.getInstance().createNewWorld(name, Environment.THE_END, WorldType.NORMAL, content.property("generator"));
+			});
+			
 		}));
 
 		
