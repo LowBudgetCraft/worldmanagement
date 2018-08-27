@@ -30,7 +30,7 @@ public class WorldDeleteConfirm implements InventoryProvider {
 		
 		long start = System.currentTimeMillis();
 		
-		player.sendMessage(F.main("Info", world + " wird nach der Bestätigung gelöscht."));
+		player.sendMessage(F.main("Info", F.name(world.getName()) + " wird nach der Bestätigung gelöscht."));
 
 		contents.set(SlotPos.of(1, 6), ClickableItem.of(new ItemBuilder(Material.GREEN_WOOL).name("Bestätigen").build(), e -> {
 			
