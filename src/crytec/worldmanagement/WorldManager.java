@@ -244,6 +244,8 @@ public class WorldManager {
 		}
 		try {
 			cfg.save(f);
+			WorldConfiguration config = new WorldConfiguration(world, cfg.getString("environment"), creator.type(), cfg.getString("generator"), seed);
+			this.worldconfigs.put(world, config);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
