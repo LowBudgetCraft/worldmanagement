@@ -14,6 +14,7 @@ public class WorldConfiguration {
 	private Environment environment;
 	private WorldType type;
 	private String generator;
+	private long seed;
 	
 	private boolean pvp = false;
 	private boolean monsterspawn = true;
@@ -25,11 +26,12 @@ public class WorldConfiguration {
 	private boolean enabled = true;
 	
 	
-	public WorldConfiguration(String world, String environment, WorldType type, String generator) {
+	public WorldConfiguration(String world, String environment, WorldType type, String generator, long seed) {
 		this.name = world;
 		this.environment = Environment.valueOf(environment);
 		this.type = type;
 		this.generator = generator;
+		this.seed = seed;
 	}
 	
 	
@@ -94,5 +96,12 @@ public class WorldConfiguration {
 	public void setKeepSpawnLoaded(boolean value) {
 		this.keepSpawnLoaded = value;
 	}
-
+	
+	public void setSeed(long seed) {
+		this.seed = seed;
+	}
+	
+	public long getSeed() {
+		return this.seed;
+	}
 }

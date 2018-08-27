@@ -1,6 +1,6 @@
 name: WorldManagement
-main: crytec.worldmanagement.Worldmanagement
-version: 2.1.4
+main: crytec.worldmanagement.WorldManagerPlugin
+version: 1.0.0
 author: crysis992
 description: CryTec World Management Plugin
 api-version: 1.13
@@ -10,4 +10,4 @@ commands:
         description: Access to WorldManagement Commands
         aliases: [wm]
         permission: worldmanagement.admin
-        usage: Syntax error! Simply type /&lt;command&gt;
+        usage: Syntax error! Simply type /command;

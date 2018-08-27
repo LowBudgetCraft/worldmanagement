@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
-import crytec.worldmanagement.Worldmanagement;
+import crytec.worldmanagement.WorldManagerPlugin;
 import net.crytec.api.itemstack.ItemBuilder;
 import net.crytec.api.smartInv.ClickableItem;
 import net.crytec.api.smartInv.content.InventoryContents;
@@ -147,21 +147,25 @@ public class WorldSettingsGUI implements InventoryProvider {
 					}));
 		
 		
-//		if (Worldmanagement.getInstance().getWorldConfig(world) != null) {
-//			content.set(SlotPos.of(1, 8), ClickableItem.of(new ItemBuilder(Material.REDSTONE_BLOCK)
-//						.name("§c§lWelt deaktivieren")
-//						.lore("§fDeaktivert die angegebene Welt")
-//						.lore("§fDiese wird bei einem Server neustart")
-//						.lore("§fnicht wieder automatisch geladen.")
-//						.build(), e -> {
-//				player.closeInventory();
-//				Worldmanagement.getInstance().getWorldConfig(world).setEnabled(false);
-//				player.sendMessage(F.main("WorldManagement", "Die Welt wurde deaktiviert."));
-//			}));
-//		}
+		if (!WorldManagerPlugin.getInstance().getWorldManager().isMainWorld(world)) {
+			content.set(SlotPos.of(1, 8), ClickableItem.of(new ItemBuilder(Material.REDSTONE_BLOCK)
+						.name("§c§lWelt deaktivieren")
+						.lore("§fDeaktivert die angegebene Welt")
+						.lore("§fDiese wird bei einem Server neustart")
+						.lore("§fnicht wieder automatisch geladen.")
+						.build(), e -> {
+				player.closeInventory();
+				long start = System.currentTimeMillis();
+				WorldManagerPlugin.getInstance().getWorldManager().unloadWorld(world, done -> {
+					long stop = System.currentTimeMillis();
+					player.sendMessage(F.main("WorldManagement", "Die Welt wurde deaktiviert. (" + (stop -start) + " ms)"));
+				});
+				
+				
+			}));
+		}
 		
-		
-		if (Worldmanagement.getInstance().getWorldConfig(world) != null) {
+		if (!WorldManagerPlugin.getInstance().getWorldManager().isMainWorld(world)) {
 			content.set(SlotPos.of(2, 8), ClickableItem.of(new ItemBuilder(Material.TNT)
 						.name("§c§lWelt löschen")
 						.lore("§4Löscht die Welt")

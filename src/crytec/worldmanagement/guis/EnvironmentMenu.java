@@ -3,11 +3,12 @@ package crytec.worldmanagement.guis;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
-import crytec.worldmanagement.Worldmanagement;
+import crytec.worldmanagement.WorldManager;
+import crytec.worldmanagement.WorldManagerPlugin;
+import crytec.worldmanagement.data.CEnvironment;
 import net.crytec.api.itemstack.ItemBuilder;
 import net.crytec.api.smartInv.ClickableItem;
 import net.crytec.api.smartInv.content.InventoryContents;
@@ -19,13 +20,14 @@ public class EnvironmentMenu implements InventoryProvider {
 	@Override
 	public void init(Player player, InventoryContents content) {		
 		
+		WorldManager manager = WorldManagerPlugin.getInstance().getWorldManager();
 		
 		content.set(0, 0, ClickableItem.of(new ItemBuilder(Material.GRASS).name(ChatColor.GRAY + "Normal").build(), e -> {
 			String name = content.property("worldname");
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
-			Bukkit.getScheduler().runTask(Worldmanagement.getInstance(), () -> {
-				Worldmanagement.getInstance().createNewWorld(name, Environment.NORMAL, WorldType.NORMAL, content.property("generator"));
+			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
+				manager.createWorld(name, CEnvironment.NORMAL, WorldType.NORMAL);
 			});
 			
 			
@@ -37,8 +39,8 @@ public class EnvironmentMenu implements InventoryProvider {
 			String name = content.property("worldname");
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
-			Bukkit.getScheduler().runTask(Worldmanagement.getInstance(), () -> {
-				Worldmanagement.getInstance().createNewWorld(name, Environment.NETHER, WorldType.NORMAL, content.property("generator"));
+			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
+				manager.createWorld(name, CEnvironment.NETHER, WorldType.NORMAL);
 			});
 			
 			
@@ -50,20 +52,23 @@ public class EnvironmentMenu implements InventoryProvider {
 			String name = content.property("worldname");
 			player.closeInventory();
 			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
-			Bukkit.getScheduler().runTask(Worldmanagement.getInstance(), () -> {
-				Worldmanagement.getInstance().createNewWorld(name, Environment.THE_END, WorldType.NORMAL, content.property("generator"));
+			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
+				manager.createWorld(name, CEnvironment.THE_END, WorldType.NORMAL);
 			});
 			
 		}));
-
 		
+		content.set(0, 3, ClickableItem.of(new ItemBuilder(Material.GLASS).name(ChatColor.GRAY + "Void").build(), e -> {
+			String name = content.property("worldname");
+			player.closeInventory();
+			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
+			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
+				manager.createWorld(name, CEnvironment.VOID, WorldType.NORMAL);
+			});
+			
+		}));
 		
-		
-		
-		
-		content.set(0, 8, ClickableItem.empty(new ItemBuilder(Material.SIGN).name(ChatColor.YELLOW + "Infos").lore("§eWeltname: §7" + content.property("worldname"))
-				.lore("§eGenerator: §7" + content.property("generator"))
-				.build()));
+		content.set(0, 8, ClickableItem.empty(new ItemBuilder(Material.SIGN).name(ChatColor.YELLOW + "Infos").lore("§eWeltname: §7" + content.property("worldname")).build()));
 		
 		
 	}
