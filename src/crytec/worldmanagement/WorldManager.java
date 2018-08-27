@@ -2,6 +2,7 @@ package crytec.worldmanagement;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.function.Consumer;
@@ -23,6 +24,7 @@ import crytec.worldmanagement.data.CEnvironment;
 import crytec.worldmanagement.data.UnloadCheckTimer;
 import crytec.worldmanagement.data.WorldConfiguration;
 import io.netty.util.internal.ThreadLocalRandom;
+import net.crytec.Debug;
 import net.crytec.api.util.F;
 import net.crytec.api.util.UtilPlayer;
 import net.crytec.shaded.org.apache.lang3.EnumUtils;
@@ -59,6 +61,7 @@ public class WorldManager {
 			this.saveWorldConfig(world);
 			Bukkit.unloadWorld(world, true);
 		}
+		this.saveAllWorldConfigs();
 	}
 
 	/**
@@ -105,6 +108,11 @@ public class WorldManager {
 		if (world != null) {
 			return;
 		}
+		
+		if (!config.isEnabled()) {
+			Debug.log("Skipped world loading - World is not enabled");
+			return;
+		}
 
 		WorldCreator creator = new WorldCreator(config.getWorldName());
 		creator.environment(config.getEnvironment());
@@ -117,7 +125,7 @@ public class WorldManager {
 
 	/**
 	 * Unload a world from the Bukkit World list and memory
-	 * 
+	 * and disables the world from loading again
 	 * @param world
 	 * @param done
 	 */
@@ -126,6 +134,7 @@ public class WorldManager {
 			done.accept(false);
 			throw new SecurityException("Denied the unloading of a world. The main world cannot be unloaded.");
 		}
+		this.getWorldConfig(world).setEnabled(false);
 		world.setKeepSpawnInMemory(false);
 		world.setAutoSave(false);
 		world.getPlayers().forEach(p -> {
@@ -197,6 +206,10 @@ public class WorldManager {
 		return this.worldconfigs.get(world);
 	}
 	
+	public Collection<WorldConfiguration> getWorldConfigurations() {
+		return this.worldconfigs.values();
+	}
+	
 	
 	public void startup() {
 		this.worldconfigs.values().forEach(cfg -> this.loadExistingWorld(cfg));
@@ -233,6 +246,29 @@ public class WorldManager {
 			cfg.save(f);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void saveAllWorldConfigs() {
+
+		for (WorldConfiguration config : this.getWorldConfigurations()) {
+			File f = new File(this.worldFolder, config.getWorldName() + ".yml");
+			YamlConfiguration cfg = YamlConfiguration.loadConfiguration(f);
+
+			cfg.set("monsterspawn", config.isMobSpawnEnabled());
+			cfg.set("animalspawn", config.isAnimalSpawnEnabled());
+			cfg.set("difficulty", config.getDifficulty().toString());
+			cfg.set("pvp", config.isPvPEnabled());
+			cfg.set("keepspawnloaded", config.keepSpawnLoaded());
+			cfg.set("enabled", config.isEnabled());
+			cfg.set("seed", config.getSeed());
+
+			try {
+				plugin.getLogger().info("Saved configuration for World " + config.getWorldName() + " to disk!");
+				cfg.save(f);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -3,9 +3,7 @@ package crytec.worldmanagement.guis;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import crytec.worldmanagement.WorldManagerPlugin;
@@ -27,13 +25,27 @@ public class WorldMainMenu implements InventoryProvider {
 		Pagination pagination = content.pagination();
 		ArrayList<ClickableItem> items = new ArrayList<ClickableItem>();
 		
-		for (World world : Bukkit.getWorlds()) {			
-			items.add(ClickableItem.of(new ItemBuilder(Material.WHITE_WOOL).name(ChatColor.GRAY + world.getName())
-					.lore("§aKlicke §7um die")
-					.lore("§7Einstellungen zu öffnen.")
-				.build(), click -> {
-								Menus.WORLD_SETTINGS.open(player, new String[] { "world" }, new Object[] { world.getName() });
-			}));
+		for (WorldConfiguration config : WorldManagerPlugin.getInstance().getWorldManager().getWorldConfigurations()) {
+			
+			ItemBuilder builder;
+			
+			if (config.isEnabled()) {
+				builder = new ItemBuilder(Material.GREEN_WOOL);
+				builder.lore("§aKlicke §7um die");
+				builder.lore("§7Einstellungen zu öffnen.");
+			} else {
+				builder = new ItemBuilder(Material.RED_WOOL);
+				builder.lore("§aKlicke §7um die");
+				builder.lore("§7Einstellungen zu öffnen.");
+				builder.lore("");
+				builder.lore("§cDiese Welt ist deaktiviert,");
+				builder.lore("§cDu musst die Welt erst aktivieren");
+				builder.lore("§cbevor du Einstellungen änderen kannst.");
+			}
+			
+			builder.name("§f" + config.getWorldName());
+			
+			items.add(ClickableItem.of(builder.build(), click -> Menus.WORLD_SETTINGS.open(player, new String[] { "config" }, new Object[] { config })));
 		}
 		
 		ClickableItem[] c = new ClickableItem[items.size()];

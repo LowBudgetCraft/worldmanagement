@@ -9,27 +9,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
 import crytec.worldmanagement.WorldManagerPlugin;
+import crytec.worldmanagement.data.WorldConfiguration;
 import net.crytec.api.itemstack.ItemBuilder;
 import net.crytec.api.smartInv.ClickableItem;
 import net.crytec.api.smartInv.content.InventoryContents;
 import net.crytec.api.smartInv.content.InventoryProvider;
 import net.crytec.api.smartInv.content.SlotPos;
 import net.crytec.api.util.F;
-import net.crytec.api.util.UtilPlayer;
 
 public class WorldSettingsGUI implements InventoryProvider {
 
 	@Override
 	public void init(Player player, InventoryContents content) {
+		WorldConfiguration config = content.property("config");
 		
-		String worldname = content.property("world");
-		World world = Bukkit.getWorld(worldname);
-		
-		boolean mainWorld = false;
-		
-		if (Bukkit.getWorlds().get(0) == world) {
-			mainWorld = true;
-		}
+		World world = Bukkit.getWorld(config.getWorldName());
 		
 		// Back Button
 		content.set(SlotPos.of(3, 0), ClickableItem.of(new ItemBuilder(Material.ARROW).name("§7Zurück").build(), e -> {
@@ -37,9 +31,12 @@ public class WorldSettingsGUI implements InventoryProvider {
 		}));
 		
 		// Teleport Button
+		
+		if (world != null) {
+		
 		content.set(SlotPos.of(3, 4), ClickableItem.of(new ItemBuilder(Material.ENDER_PEARL).name("§2Teleport").build(), e -> {
 					player.closeInventory();
-					UtilPlayer.teleport(player, world.getSpawnLocation());
+					player.teleport(world.getSpawnLocation());
 					player.sendMessage(F.main("WorldManagement", "Du wurdest an den Spawn der Welt " + F.name(world.getName()) + " teleportiert."));
 					return;
 		}));
@@ -58,72 +55,62 @@ public class WorldSettingsGUI implements InventoryProvider {
 						player.sendMessage(F.main("WorldManagement", "Der Spawnpunkt der Welt " + F.name(world.getName()) + " wurde an deiner aktuellen Position gesetzt."));
 					}));
 		
-		if (!mainWorld) {
 		content.set(SlotPos.of(0, 1), ClickableItem.of(new ItemBuilder(Material.SPAWNER)
 					.name("§2Monster Spawn")
-					.lore("§fAktiviert: " + F.tf(world.getAllowMonsters()))
+					.lore("§fMonster können spawnen: " + F.tf(world.getAllowMonsters()))
 					.build(), e -> {
 						world.setSpawnFlags(!world.getAllowMonsters(), world.getAllowAnimals());
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
-		}
 		
-		if (!mainWorld) {
 		content.set(SlotPos.of(0, 2), ClickableItem.of(new ItemBuilder(Material.WHITE_WOOL)
 					.name("§2Tier Spawn")
-					.lore("§fAktiviert: " + F.tf(world.getAllowAnimals()))
+					.lore("§fTiere können spawnen: " + F.tf(world.getAllowAnimals()))
 					.build(), e -> {
 						world.setSpawnFlags(world.getAllowMonsters(), !world.getAllowAnimals());
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
-		}
 		
-		if (!mainWorld) {
 		content.set(SlotPos.of(0, 3), ClickableItem.of(new ItemBuilder(Material.DRAGON_EGG)
 					.name("§2Schwierigkeit")
 					.lore("§fVerändert die Schwwierigkeit der Welt.")
-					.lore("§fAktuell:" + world.getDifficulty().name())
+					.lore("§fAktuelle Schwierigkeit:" + world.getDifficulty().name())
 					.build(), e -> {
 						world.setDifficulty(getNextDifficulty(world.getDifficulty()));
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
-		}
 		
-		if (!mainWorld) {
 		content.set(SlotPos.of(0, 4), ClickableItem.of(new ItemBuilder(Material.DIAMOND_SWORD)
 					.name("§2PvP")
 					.setItemFlag(ItemFlag.HIDE_ATTRIBUTES)
 					.lore("§fAktiviert/Deaktiviert das PvP")
 					.lore("§fin dieser Welt.")
-					.lore("§fAktiviert: " + F.tf(world.getPVP()))
+					.lore("§fPvP aktiviert: " + F.tf(world.getPVP()))
 					.build(), e -> {
 						world.setPVP(!world.getPVP());
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
-		}
 		
-		if (!mainWorld) {
 		content.set(SlotPos.of(0, 5), ClickableItem.of(new ItemBuilder(Material.BEACON)
 					.name("§2Spawn geladen lassen")
 					.lore("§fLässt die Chunks um den Spawn")
 					.lore("§fpermanent geladen.")
 					.lore("§fTeleports an den Spawn dieser Welt")
 					.lore("§fsind damit schneller.")
-					.lore("§fAktiviert: " + F.tf(world.getKeepSpawnInMemory()))
+					.lore("§fChunks bleiben geladen: " + F.tf(world.getKeepSpawnInMemory()))
 					.build(), e -> {
 						world.setKeepSpawnInMemory(!world.getKeepSpawnInMemory());
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
-		}
 		
 		content.set(SlotPos.of(0, 6), ClickableItem.of(new ItemBuilder(Material.FLINT_AND_STEEL)
 					.name("§2Feuer")
 					.lore("§fAktiviert/Deaktiviert die")
 					.lore("§fAusbreitung von Feuer.")
-					.lore("§fAktiviert: " + F.tf(world.getGameRuleValue(GameRule.DO_FIRE_TICK)))
+					.lore("§fFeuer breitet sich aus: " + F.tf(world.getGameRuleValue(GameRule.DO_FIRE_TICK)))
 					.build(), e -> {
 						world.setGameRule(GameRule.DO_FIRE_TICK, !world.getGameRuleValue(GameRule.DO_FIRE_TICK));
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
 		
 		content.set(SlotPos.of(0, 7), ClickableItem.of(new ItemBuilder(Material.CLOCK)
@@ -133,22 +120,58 @@ public class WorldSettingsGUI implements InventoryProvider {
 					.lore("§fZeit eingefroren: " + F.tf(!world.getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE)))
 					.build(), e -> {
 						world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, !world.getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE));
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
 		
 		content.set(SlotPos.of(0, 8), ClickableItem.of(new ItemBuilder(Material.WATER_BUCKET)
 					.name("§2Wetter")
 					.lore("§fAktiviert/Deaktiviert das")
 					.lore("§fWetter in der Welt")
-					.lore("§fAktiviert: " + F.tf(world.getGameRuleValue(GameRule.DO_WEATHER_CYCLE)))
+					.lore("§fWetter aktiviert: " + F.tf(world.getGameRuleValue(GameRule.DO_WEATHER_CYCLE)))
 					.build(), e -> {
 						world.setGameRule(GameRule.DO_WEATHER_CYCLE, !world.getGameRuleValue(GameRule.DO_WEATHER_CYCLE));
-						this.reOpenMenu(player, world);
+						this.reOpenMenu(player, config);
 					}));
 		
 		
+		
+		
+		
+		
+		
+		// Welt permanent löschen
 		if (!WorldManagerPlugin.getInstance().getWorldManager().isMainWorld(world)) {
-			content.set(SlotPos.of(1, 8), ClickableItem.of(new ItemBuilder(Material.REDSTONE_BLOCK)
+						content.set(SlotPos.of(3, 8), ClickableItem.of(new ItemBuilder(Material.TNT)
+								.name("§c§lWelt löschen")
+								.lore("§4Löscht die Welt")
+								.lore("§4§lPERMANENT §cvom Server.")
+								.lore("§cDieser Aktion lässt sich §4§lNICHT")
+								.lore("§crückgängig machen.")
+								.build(), e -> Menus.DELETE_CONFIRM.open(player, new String[] { "world" }, new Object[] { world })));
+	}
+		
+		
+		}
+		
+		
+			if (!config.isEnabled()) {
+			content.set(SlotPos.of(3, 1), ClickableItem.of(new ItemBuilder(Material.EMERALD_BLOCK)
+						.name("§a§lWelt aktivieren")
+						.lore("§fAktiviert die angegebene Welt")
+						.lore("§fund lädt diese anschließend.")
+						.lore("§fDiese wird bei einem Server neustart")
+						.lore("§fautomatisch geladen.")
+						.build(), e -> {
+				player.closeInventory();
+				config.setEnabled(true);
+				WorldManagerPlugin.getInstance().getWorldManager().loadExistingWorld(config);
+				player.sendMessage(F.main("WorldManagement", "Die Welt " + F.name(config.getWorldName()) + " wird aktiviert..."));
+				}));
+			}
+		
+		
+			if (config.isEnabled()) {
+			content.set(SlotPos.of(3, 2), ClickableItem.of(new ItemBuilder(Material.REDSTONE_BLOCK)
 						.name("§c§lWelt deaktivieren")
 						.lore("§fDeaktivert die angegebene Welt")
 						.lore("§fDiese wird bei einem Server neustart")
@@ -159,36 +182,19 @@ public class WorldSettingsGUI implements InventoryProvider {
 				WorldManagerPlugin.getInstance().getWorldManager().unloadWorld(world, done -> {
 					long stop = System.currentTimeMillis();
 					player.sendMessage(F.main("WorldManagement", "Die Welt wurde deaktiviert. (" + (stop -start) + " ms)"));
+					config.setEnabled(false);
 				});
-				
-				
-			}));
-		}
-		
-		if (!WorldManagerPlugin.getInstance().getWorldManager().isMainWorld(world)) {
-			content.set(SlotPos.of(2, 8), ClickableItem.of(new ItemBuilder(Material.TNT)
-						.name("§c§lWelt löschen")
-						.lore("§4Löscht die Welt")
-						.lore("§4§lPERMANENT §cvom Server.")
-						.lore("§cDieser Aktion lässt sich §4§lNICHT")
-						.lore("§crückgängig machen.")
-						.build(), e -> {
-							Menus.DELETE_CONFIRM.open(player, new String[] { "world" }, new Object[] { world });
-						}));
-		}
+			 }));
+			}
 
-		
-		
-		
-		
 	}
 
 	@Override
 	public void update(Player arg0, InventoryContents arg1) {		
 	}
 	
-	private void reOpenMenu(Player player, World world) {
-		Menus.WORLD_SETTINGS.open(player, new String[] { "world" }, new Object[] { world.getName() });
+	private void reOpenMenu(Player player, WorldConfiguration config) {
+		Menus.WORLD_SETTINGS.open(player, new String[] { "config" }, new Object[] { config });
 	}
 	
 	private Difficulty getNextDifficulty(Difficulty current) {
