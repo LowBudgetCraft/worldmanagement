@@ -33,6 +33,9 @@ public class WorldMainMenu implements InventoryProvider {
 				builder = new ItemBuilder(Material.GREEN_WOOL);
 				builder.lore("§aKlicke §7um die");
 				builder.lore("§7Einstellungen zu öffnen.");
+				builder.lore("§7Welttyp: " + config.getWorldType());
+				builder.lore("§7Umgebung: " + config.getEnvironment());
+				builder.lore("§7Generator: " + config.getGenerator());
 			} else {
 				builder = new ItemBuilder(Material.RED_WOOL);
 				builder.lore("§aKlicke §7um die");

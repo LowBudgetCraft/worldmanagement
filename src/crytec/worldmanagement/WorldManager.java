@@ -87,10 +87,7 @@ public class WorldManager {
 		if (EnumUtils.isValidEnum(Environment.class, environment.toString())) {
 			creator.environment(Environment.valueOf(environment.toString()));
 		}
-
-		if (environment == CEnvironment.VOID) {
-			creator.generator(new VoidWorld());
-		}
+		
 		long seed = ThreadLocalRandom.current().nextLong();
 		creator.seed(seed);
 		creator.type(worldType);
@@ -147,6 +144,7 @@ public class WorldManager {
 		}
 		new UnloadCheckTimer(plugin, done, world.getName());
 		Bukkit.unloadWorld(world, true);
+		this.saveWorldConfig(world);
 	}
 
 	/**
@@ -237,11 +235,8 @@ public class WorldManager {
 		cfg.set("difficulty", Difficulty.NORMAL.toString());
 		cfg.set("keepspawnloaded", true);
 		cfg.set("seed", seed);
-		if (env == CEnvironment.VOID) {
-			cfg.set("generator", "void");
-		} else {
-			cfg.set("generator", "none");
-		}
+		cfg.set("generator", "none");
+		
 		try {
 			cfg.save(f);
 			WorldConfiguration config = new WorldConfiguration(world, cfg.getString("environment"), creator.type(), cfg.getString("generator"), seed);

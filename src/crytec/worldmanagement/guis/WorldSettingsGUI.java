@@ -58,6 +58,8 @@ public class WorldSettingsGUI implements InventoryProvider {
 		content.set(SlotPos.of(0, 1), ClickableItem.of(new ItemBuilder(Material.SPAWNER)
 					.name("§2Monster Spawn")
 					.lore("§fMonster können spawnen: " + F.tf(world.getAllowMonsters()))
+					.lore("")
+					.lore("§cEntfernt nicht bereits existierende Mobs!")
 					.build(), e -> {
 						world.setSpawnFlags(!world.getAllowMonsters(), world.getAllowAnimals());
 						this.reOpenMenu(player, config);
@@ -66,6 +68,8 @@ public class WorldSettingsGUI implements InventoryProvider {
 		content.set(SlotPos.of(0, 2), ClickableItem.of(new ItemBuilder(Material.WHITE_WOOL)
 					.name("§2Tier Spawn")
 					.lore("§fTiere können spawnen: " + F.tf(world.getAllowAnimals()))
+					.lore("")
+					.lore("§cEntfernt nicht bereits existierende Mobs!")
 					.build(), e -> {
 						world.setSpawnFlags(world.getAllowMonsters(), !world.getAllowAnimals());
 						this.reOpenMenu(player, config);
@@ -133,7 +137,15 @@ public class WorldSettingsGUI implements InventoryProvider {
 						this.reOpenMenu(player, config);
 					}));
 		
-		
+		content.set(SlotPos.of(3, 6), ClickableItem.empty(new ItemBuilder(Material.SIGN)
+					.name("§2Informationen:")
+					.lore("§fWelttyp: §7" + world.getWorldType())
+					.lore("§fUmgebung: §7" + world.getEnvironment())
+					.lore("§fSeed: §6" + world.getSeed())
+					.lore("§fEntitys: §e" + world.getEntityCount())
+					.lore("§fGeladene Chunks: §e" + world.getLoadedChunks().length)
+					.lore("§fWeltgrenze: §e" + world.getWorldBorder().getSize())
+					.build()));
 		
 		
 		

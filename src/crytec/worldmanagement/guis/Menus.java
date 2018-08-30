@@ -23,6 +23,12 @@ public class Menus {
 			.title("Wähle die Umgebung")
 			.build();
 	
+	public static final SmartInventory TYPE_MENU = SmartInventory.builder().id("wm.typeselector")
+				.provider(new WorldTypeMenu())
+				.size(1, 9)
+				.title("Welt Typ auswählen")
+				.build();
+	
 	public static final SmartInventory DELETE_CONFIRM = SmartInventory.builder().id("wm.deleteConfirm")
 				.provider(new WorldDeleteConfirm())
 				.size(3, 9)

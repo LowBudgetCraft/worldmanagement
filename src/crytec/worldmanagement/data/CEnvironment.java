@@ -6,8 +6,7 @@ public enum CEnvironment {
 	
 	NORMAL("Normal"),
 	NETHER("Nether"),
-	THE_END("Endwelt"),
-	VOID("Voidwelt");
+	THE_END("Endwelt");
 	
 	@Getter
 	private String displayname;
