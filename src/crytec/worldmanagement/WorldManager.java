@@ -197,6 +197,16 @@ public class WorldManager {
 		}
 		try {
 			FileUtils.forceDelete(folder);
+			
+			if (this.plugin.getConfig().getBoolean("deletion.worldguard", true)) {
+				plugin.getLogger().info("Trying to remove world folder from WorldGuard...");
+				
+				File file = new File(Bukkit.getPluginManager().getPlugin("WorldGuard").getDataFolder(), "worlds" + File.separator + worldFolderName);
+				if (file.exists()) {
+					plugin.getLogger().info("Found worldguard folder at path: " + file.getAbsolutePath());
+					FileUtils.forceDelete(file);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

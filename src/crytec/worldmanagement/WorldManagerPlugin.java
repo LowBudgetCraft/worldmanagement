@@ -16,11 +16,14 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
 	@Override
 	public void onLoad() {
 		WorldManagerPlugin.instance = this;
+		this.saveResource("config.yml", false);
 	}
 
 	@Override
 	public void onEnable() {
+		if (this.getConfig().getBoolean("verbose", true)) {
 		Bukkit.getPluginManager().registerEvents(new WorldListener(this), this);
+		}
 		this.worldManager = new WorldManager(this);
 		this.getCommand("worldmanagement").setExecutor(new WorldCommands());
 		this.worldManager.startup();

@@ -1,0 +1,11 @@
+#####
+##### WorldManagement configuration file
+#####
+
+#Print some additional informations about the configuration file for the
+#world that is being loaded.
+verbose: true
+
+# If this is enabled, the plugin will try to delete additional data stored by other plugins
+deletion:
+    worldguard: true
