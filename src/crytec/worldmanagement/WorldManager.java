@@ -18,6 +18,8 @@ import org.bukkit.WorldType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
+import com.boydti.fawe.util.TaskManager;
 import com.google.common.collect.Maps;
 
 import crytec.worldmanagement.data.CEnvironment;
@@ -71,7 +73,7 @@ public class WorldManager {
 	 * @param environment
 	 * @param worldType
 	 */
-	public void createWorld(String folder, CEnvironment environment, WorldType worldType) {
+	public void createWorld(String folder, CEnvironment environment, WorldType worldType, boolean attemptAsync) {
 
 		World world = Bukkit.getWorld(folder);
 		if (world != null) {
@@ -91,7 +93,24 @@ public class WorldManager {
 		long seed = ThreadLocalRandom.current().nextLong();
 		creator.seed(seed);
 		creator.type(worldType);
-		creator.createWorld();
+		
+		if (attemptAsync) {
+			if (Bukkit.getPluginManager().getPlugin("FastAsyncWorldEdit") != null) {
+				TaskManager.IMP.async(new Runnable() {
+				    @Override
+				    public void run() {
+				        AsyncWorld world = AsyncWorld.create(creator);
+				        world.commit();
+				    }
+				});
+				
+			} else {
+				creator.createWorld();
+			}
+			
+		} else {
+			creator.createWorld();
+		}
 		this.createDefaultWorldConfig(folder, environment, creator, seed);
 	}
 
@@ -100,7 +119,7 @@ public class WorldManager {
 	 * 
 	 * @param config
 	 */
-	public void loadExistingWorld(WorldConfiguration config) {
+	public void loadExistingWorld(WorldConfiguration config, boolean attemptAsync) {
 		World world = Bukkit.getWorld(config.getWorldName());
 		if (world != null) {
 			return;
@@ -117,7 +136,25 @@ public class WorldManager {
 		if (!config.getGenerator().equals("none")) {
 			creator.generator(config.getGenerator());
 		}
-		creator.createWorld();
+		
+		
+		if (attemptAsync) {
+			if (Bukkit.getPluginManager().getPlugin("FastAsyncWorldEdit") != null) {
+				TaskManager.IMP.async(new Runnable() {
+				    @Override
+				    public void run() {
+				        AsyncWorld world = AsyncWorld.create(creator);
+				        world.commit();
+				    }
+				});
+				
+			} else {
+				creator.createWorld();
+			}
+			
+		} else {
+			creator.createWorld();
+		}
 	}
 
 	/**
@@ -210,7 +247,7 @@ public class WorldManager {
 	
 	
 	public void startup() {
-		this.worldconfigs.values().forEach(cfg -> this.loadExistingWorld(cfg));
+		this.worldconfigs.values().forEach(cfg -> this.loadExistingWorld(cfg, false));
 	}
 
 	private void createDefaultWorldConfig(String world, CEnvironment env, WorldCreator creator, long seed) {

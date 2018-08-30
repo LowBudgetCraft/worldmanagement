@@ -8,7 +8,6 @@ import lombok.Getter;
 
 public class WorldManagerPlugin extends JavaPlugin implements Listener {
 
-	public final String prefix = "[WorldManagement] ";
 	private static WorldManagerPlugin instance;
 
 	@Getter

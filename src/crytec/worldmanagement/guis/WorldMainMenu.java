@@ -71,7 +71,7 @@ public class WorldMainMenu implements InventoryProvider {
 					return;
 				} else if (WorldManagerPlugin.getInstance().getWorldManager().hasWorldConfig(result)) {
 					WorldConfiguration config = WorldManagerPlugin.getInstance().getWorldManager().getWorldConfig(result);
-					Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> WorldManagerPlugin.getInstance().getWorldManager().loadExistingWorld(config));
+					Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> WorldManagerPlugin.getInstance().getWorldManager().loadExistingWorld(config, true));
 					player.sendMessage(F.main("WorldManagement", "Es existiert bereits eine Konfiguration. Diese Welt wird nun importiert."));
 				} else {
 					Menus.ENV_MENU.open(player, new String[] { "worldname" }, new String[] { result });

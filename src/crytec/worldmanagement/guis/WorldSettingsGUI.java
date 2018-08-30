@@ -176,7 +176,7 @@ public class WorldSettingsGUI implements InventoryProvider {
 						.build(), e -> {
 				player.closeInventory();
 				config.setEnabled(true);
-				WorldManagerPlugin.getInstance().getWorldManager().loadExistingWorld(config);
+				WorldManagerPlugin.getInstance().getWorldManager().loadExistingWorld(config, true);
 				player.sendMessage(F.main("WorldManagement", "Die Welt " + F.name(config.getWorldName()) + " wird aktiviert..."));
 				}));
 			}

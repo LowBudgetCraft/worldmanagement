@@ -27,33 +27,33 @@ public class WorldTypeMenu implements InventoryProvider {
 		
 		content.set(0, 0, ClickableItem.of(new ItemBuilder(Material.GRASS).name(ChatColor.GRAY + CWorldType.NORMAL.getName()).lore(CWorldType.NORMAL.getDescription()).build(), e -> {
 			player.closeInventory();
-			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
+			player.sendMessage(F.main("WorldManagement", "Eine neue Welt wird generiert..."));
 			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
-				manager.createWorld(worldname, env, WorldType.NORMAL);
+				manager.createWorld(worldname, env, WorldType.NORMAL, true);
 			});
 			
 		}));
 		content.set(0, 1, ClickableItem.of(new ItemBuilder(Material.BEDROCK).name(ChatColor.GRAY + CWorldType.FLAT.getName()).lore(CWorldType.FLAT.getDescription()).build(), e -> {
 			player.closeInventory();
-			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
+			player.sendMessage(F.main("WorldManagement", "Eine neue Welt wird generiert..."));
 			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
-				manager.createWorld(worldname, env, WorldType.FLAT);
+				manager.createWorld(worldname, env, WorldType.FLAT, true);
 			});
 			
 		}));
 		content.set(0, 2, ClickableItem.of(new ItemBuilder(Material.GRASS).name(ChatColor.GRAY + CWorldType.LARGE_BIOMES.getName()).lore(CWorldType.LARGE_BIOMES.getDescription()).build(), e -> {
 			player.closeInventory();
-			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
+			player.sendMessage(F.main("WorldManagement", "Eine neue Welt wird generiert..."));
 			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
-				manager.createWorld(worldname, env, WorldType.LARGE_BIOMES);
+				manager.createWorld(worldname, env, WorldType.LARGE_BIOMES, true);
 			});
 			
 		}));
 		content.set(0, 3, ClickableItem.of(new ItemBuilder(Material.GRASS).name(ChatColor.GRAY + CWorldType.AMPLIFIED.getName()).lore(CWorldType.AMPLIFIED.getDescription()).build(), e -> { 
 			player.closeInventory();
-			player.sendMessage(F.main("Admin", "Eine neue Welt wird generiert..."));
+			player.sendMessage(F.main("WorldManagement", "Eine neue Welt wird generiert..."));
 			Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> {
-				manager.createWorld(worldname, env, WorldType.AMPLIFIED);
+				manager.createWorld(worldname, env, WorldType.AMPLIFIED, true);
 			});
 		}));
 		
