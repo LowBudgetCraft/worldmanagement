@@ -31,6 +31,8 @@ public class WorldListener implements Listener {
 		plugin.getLogger().info("Monsterspawn: " + e.getWorld().getAllowAnimals());
 		plugin.getLogger().info("Difficulty: " + e.getWorld().getDifficulty().name());
 		plugin.getLogger().info("Keep Spawn Loaded: " + e.getWorld().getKeepSpawnInMemory());
+		plugin.getLogger().info("Environment: " + e.getWorld().getEnvironment());
+		plugin.getLogger().info("WorldType: " + e.getWorld().getWorldType());
 
 	}
 }
