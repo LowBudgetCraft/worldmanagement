@@ -10,4 +10,4 @@ commands:
         description: Access to WorldManagement Commands
         aliases: [wm]
         permission: worldmanagement.admin
-        usage: Syntax error! Simply type /command;
+        usage: Syntax error! Simply type /wm;

@@ -8,8 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import crytec.worldmanagement.guis.Menus;
-import net.crytec.api.util.F;
-import net.crytec.api.util.UtilPlayer;
 
 public class WorldCommands implements CommandExecutor {
 
@@ -17,7 +15,7 @@ public class WorldCommands implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("§cDieser Command kann nur von einem Spieler ausgeführt werden.");
+			sender.sendMessage("§cThis command can only be executed by a player");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -27,21 +25,20 @@ public class WorldCommands implements CommandExecutor {
 				Menus.WORLD_MAIN_MENU.open(player);
 				return true;
 			} else {
-				player.sendMessage("§cDu hast keine Berechtigung diesen Command zu nutzen!");
+				player.sendMessage(Language.ERROR_NO_PERM.toChatString());
 				return true;
 			}
 		} else if (args.length == 2 && args[0].equals("tp")) {
 			if (!player.hasPermission("worldmanagement.teleport")) {
-				player.sendMessage("§cDu hast keine Berechtigung diesen Command zu nutzen!");
+				player.sendMessage(Language.ERROR_NO_PERM.toChatString());
 				return true;
 			}
 			World world = Bukkit.getWorld(args[1]);
 			if (world == null) {
-				sender.sendMessage(F.error("Diese Welt existiert nicht."));
+				sender.sendMessage(Language.ERROR_NO_WORLD.toChatString());
 				return true;
 			}
-
-			UtilPlayer.teleport(player, world.getSpawnLocation());
+			player.teleport(world.getSpawnLocation());
 			return true;
 
 		} else {

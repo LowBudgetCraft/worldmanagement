@@ -22,7 +22,6 @@ import com.boydti.fawe.bukkit.wrapper.AsyncWorld;
 import com.boydti.fawe.util.TaskManager;
 import com.google.common.collect.Maps;
 
-import crytec.worldmanagement.data.CEnvironment;
 import crytec.worldmanagement.data.UnloadCheckTimer;
 import crytec.worldmanagement.data.WorldConfiguration;
 import io.netty.util.internal.ThreadLocalRandom;
@@ -73,7 +72,7 @@ public class WorldManager {
 	 * @param environment
 	 * @param worldType
 	 */
-	public void createWorld(String folder, CEnvironment environment, WorldType worldType, boolean attemptAsync) {
+	public void createWorld(String folder, Environment environment, WorldType worldType, boolean attemptAsync) {
 
 		World world = Bukkit.getWorld(folder);
 		if (world != null) {
@@ -260,7 +259,7 @@ public class WorldManager {
 		this.worldconfigs.values().forEach(cfg -> this.loadExistingWorld(cfg, false));
 	}
 
-	private void createDefaultWorldConfig(String world, CEnvironment env, WorldCreator creator, long seed) {
+	private void createDefaultWorldConfig(String world, Environment env, WorldCreator creator, long seed) {
 		File f = new File(this.worldFolder, world + ".yml");
 		if (!f.exists()) {
 			try {
