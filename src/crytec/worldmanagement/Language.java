@@ -123,7 +123,7 @@ public enum Language {
     			)),
     
     GUI_SETTINGS_WEATHER("gui.settings.weather.name", "&2Toggle weather"),
-    GUI_SETTINGS_WEATHER_DESC("gui.settings.weather.description", Arrays.asList("&fWeather enabled: %status%"
+    GUI_SETTINGS_WEATHER_DESC("gui.settings.weather.description", Arrays.asList("&fWeather disabled: %status%"
     			, ""
     			, "&fIf disabled the weather will not change"
     			, "&7Default: off"
