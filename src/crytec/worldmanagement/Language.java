@@ -155,6 +155,10 @@ public enum Language {
     			, "&cThis action cannot be undone!"
     			, "&cYour world will be gone forever.")),
     
+    GUI_DELETION_CONFIRM("gui.deletion.confirm", "&2Confirm"),
+    GUI_DELETION_FEEDBACK("gui.deletion.feedback", "&7The world has been deleted in %time%"),
+    GUI_DELETION_ABORT("gui.deletion.abort", "&cAbort"),
+    
     WORLDTYPE_NORMAL("worldtype-normal", "&fNormal"),
     WORLDTYPE_FLATWORLD("worldtype-flat", "&fFlatworld"),
     WORLDTYPE_AMPLIFIED("worldtype-amplified", "&fAmplifield"),
