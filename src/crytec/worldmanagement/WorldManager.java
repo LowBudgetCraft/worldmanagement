@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
@@ -339,6 +340,7 @@ public class WorldManager {
 		cfg.set("keepspawnloaded", config.keepSpawnLoaded());
 		cfg.set("enabled", config.isEnabled());
 		cfg.set("seed", config.getSeed());
+		cfg.set("gamemode", GameMode.SURVIVAL.toString());
 
 		try {
 			plugin.getLogger().info("Saved configuration for World " + world.getName() + " to disk!");
@@ -369,6 +371,7 @@ public class WorldManager {
 			config.setDifficulty(Difficulty.valueOf(cfg.getString("difficulty", Difficulty.NORMAL.toString())));
 			config.setEnabled(cfg.getBoolean("enabled", true));
 			config.setKeepSpawnLoaded(cfg.getBoolean("keepspawnloaded", true));
+			config.setGameMode(GameMode.valueOf(cfg.getString("gamemode", GameMode.SURVIVAL.toString())));
 			this.worldconfigs.put(worldname, config);
 			plugin.getLogger().info("Loaded world config for world " + cfg.getString("worldname"));
 		}

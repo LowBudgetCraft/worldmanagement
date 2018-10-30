@@ -1,7 +1,9 @@
 package crytec.worldmanagement;
 
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
 import crytec.worldmanagement.data.WorldConfiguration;
@@ -12,6 +14,22 @@ public class WorldListener implements Listener {
 
 	public WorldListener(WorldManagerPlugin plugin) {
 		this.plugin = plugin;
+	}
+	
+	@EventHandler(ignoreCancelled = true)
+	public void forceGameMode(PlayerChangedWorldEvent event) {
+		if (plugin.getWorldManager().hasWorldConfig(event.getPlayer().getWorld())) {
+			GameMode mode = plugin.getWorldManager().getWorldConfig(event.getPlayer().getWorld()).getForcedGameMode();
+			
+			if (event.getPlayer().getGameMode() != mode) {
+				if (event.getPlayer().hasPermission("worldmanagement.gamemode.bypass")) {
+					event.getPlayer().sendMessage(Language.GENERAL_GAMEMODE_FORCED_BYPASS.toChatString());
+					return;
+				}
+				event.getPlayer().setGameMode(mode);
+				event.getPlayer().sendMessage(Language.GENERAL_GAMEMODE_FORCED.toChatString().replace("%gamemode%", mode.toString()));
+			}
+		}
 	}
 
 	@EventHandler

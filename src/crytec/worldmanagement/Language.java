@@ -23,6 +23,9 @@ public enum Language {
     ENVIRONMENT_NETHER("nether-environment", "&fNether"),
     ENVIRONMENT_NORMAL("normal-environment", "&fNormal"),
     
+    GENERAL_GAMEMODE_FORCED("general.gamemode.forced.user", "&fThis world has a gamemode restriction. Your gamemode has been changed to &2%gamemode%"),
+    GENERAL_GAMEMODE_FORCED_BYPASS("general.gamemode.forced.bypassed", "&cThis world has a gamemode restriction. But you have the bypass permission. Your gamemode will not be updated."),
+    
     GUI_TITLE_MAIN("gui.main.title", "WorldManager - Main Menu"),
     GUI_TITLE_SETTINGS("gui.settings.title", "WorldManager - Settings"),
     GUI_TITLE_ENVIRONMENT("gui.environment.title", "Select a environment"),
@@ -154,6 +157,13 @@ public enum Language {
     			, "&cfrom the disk."
     			, "&cThis action cannot be undone!"
     			, "&cYour world will be gone forever.")),
+    
+    GUI_SETTINGS_GAMEMODE("gui.settings.gamemode.name", "Default Gamemode"),
+    GUI_SETTINGS_GAMEMODE_DESCRIPTION("gui.settings.gamemode.description", Arrays.asList("&7Set the default gamemode"
+    			, "&7Players are forced into this"
+    			, "&7gamemode when entering the world"
+    			, "&7Current gamemode: &6%gamemode%")),
+    
     
     GUI_DELETION_CONFIRM("gui.deletion.confirm", "&2Confirm"),
     GUI_DELETION_FEEDBACK("gui.deletion.feedback", "&7The world has been deleted in %time%"),

@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -148,6 +149,15 @@ public class WorldSettingsGUI implements InventoryProvider {
 								).collect(Collectors.toList()))
 					.build()));
 		
+		content.set(SlotPos.of(0, 0), ClickableItem.of(new ItemBuilder(Material.ARMOR_STAND)
+					.name(Language.GUI_SETTINGS_GAMEMODE.toString())
+					.lore(Language.GUI_SETTINGS_GAMEMODE.getDescriptionArray()
+					.stream().map(s -> s.replace("%status%", config.getForcedGameMode().toString())).collect(Collectors.toList()))
+					.build(), e -> {
+						config.setGameMode(this.getNextGameMode(config.getForcedGameMode()));
+						this.reOpenMenu(player, config);
+					}));
+		
 		
 		
 		
@@ -207,6 +217,16 @@ public class WorldSettingsGUI implements InventoryProvider {
 		case NORMAL:  return Difficulty.HARD; 
 		case HARD:  return Difficulty.PEACEFUL; 
 		default: return Difficulty.EASY;
+		}
+	}
+	
+	private GameMode getNextGameMode(GameMode current) {
+		switch (current) {
+		case SURVIVAL: return GameMode.CREATIVE; 
+		case CREATIVE:  return GameMode.ADVENTURE; 
+		case ADVENTURE:  return GameMode.SPECTATOR; 
+		case SPECTATOR:  return GameMode.SURVIVAL; 
+		default: return GameMode.SURVIVAL;
 		}
 	}
 }

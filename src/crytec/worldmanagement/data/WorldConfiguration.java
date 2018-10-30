@@ -1,6 +1,7 @@
 package crytec.worldmanagement.data;
 
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 
@@ -21,6 +22,7 @@ public class WorldConfiguration {
 	private boolean animalspawn = true;
 	private Difficulty difficulty = Difficulty.NORMAL;
 	private boolean keepSpawnLoaded = true;
+	private GameMode gamemode = GameMode.SURVIVAL;
 	
 	@Getter @Setter
 	private boolean enabled = true;
@@ -104,4 +106,13 @@ public class WorldConfiguration {
 	public long getSeed() {
 		return this.seed;
 	}
+	
+	public void setGameMode(GameMode gamemode) {
+		this.gamemode = gamemode;
+	}
+	
+	public GameMode getForcedGameMode() {
+		return this.gamemode;
+	}
+	
 }
