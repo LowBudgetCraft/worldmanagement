@@ -6,6 +6,10 @@
 #world that is being loaded.
 verbose: true
 
+#Restrict the worldname to alpanumeric characters only when creating a new world (a-z and 0-9)
+#Disabling this may cause some issues under some circumstances
+alphanumeric only: true
+
 # If this is enabled, the plugin will try to delete additional data stored by other plugins
 deletion:
     worldguard: true

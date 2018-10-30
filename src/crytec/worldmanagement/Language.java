@@ -18,6 +18,7 @@ public enum Language {
     ERROR_NO_WORLD("error.noWorld", "&cThis world does not exist"),
     ERROR_ALREADYEXIST("error.exists", "&cThis world already exists"),
     ERROR_WRONG_WORLD("error.wrongworld", "&cYou are in the wrong world for this action."),
+    ERROR_WRONG_NAME("error.worldname", "&cThe worldname may only contain alphanumeric characters. (a-z | 0-9)"),
 	
     ENVIRONMENT_END("end-environment", "&fThe End"),
     ENVIRONMENT_NETHER("nether-environment", "&fNether"),

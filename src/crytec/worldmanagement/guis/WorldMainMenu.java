@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -70,6 +71,12 @@ public class WorldMainMenu implements InventoryProvider {
 			player.closeInventory();
 			player.sendMessage(Language.GUI_CHATPROMOT_ENTERWORLDNAME.toChatString());
 			ChatStringInput.addPlayer(player, result -> {
+				
+				if (WorldManagerPlugin.getInstance().getConfig().getBoolean("alphanumeric only", true) && !StringUtils.isAlphanumeric(result)) {
+					player.sendMessage(Language.ERROR_WRONG_NAME.toChatString());
+					return;
+				}
+				
 				if (Bukkit.getWorld(result) != null) {
 					player.sendMessage(Language.ERROR_ALREADYEXIST.toChatString());
 					return;
