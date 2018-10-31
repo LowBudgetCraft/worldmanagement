@@ -28,7 +28,7 @@ public class WorldCommands implements CommandExecutor {
 				player.sendMessage(Language.ERROR_NO_PERM.toChatString());
 				return true;
 			}
-		} else if (args.length == 2 && args[0].equals("tp")) {
+		} else if (args.length == 2 && args[0].equals("tp") || args[0].equalsIgnoreCase("teleport")) {
 			if (!player.hasPermission("worldmanagement.teleport")) {
 				player.sendMessage(Language.ERROR_NO_PERM.toChatString());
 				return true;
