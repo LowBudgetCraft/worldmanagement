@@ -25,7 +25,6 @@ public enum Language {
     ENVIRONMENT_NORMAL("normal-environment", "&fNormal"),
     
     GENERAL_GAMEMODE_FORCED("general.gamemode.forced.user", "&fThis world has a gamemode restriction. Your gamemode has been changed to &2%gamemode%"),
-    GENERAL_GAMEMODE_FORCED_BYPASS("general.gamemode.forced.bypassed", "&cThis world has a gamemode restriction. But you have the bypass permission. Your gamemode will not be updated."),
     
     GUI_TITLE_MAIN("gui.main.title", "WorldManager - Main Menu"),
     GUI_TITLE_SETTINGS("gui.settings.title", "WorldManager - Settings"),

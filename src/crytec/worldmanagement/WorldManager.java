@@ -99,16 +99,19 @@ public class WorldManager {
 				TaskManager.IMP.async(new Runnable() {
 				    @Override
 				    public void run() {
+				    	plugin.getLogger().info("Trying to load world [" + creator.name() + "] async via FastAsyncWorldEdit!");
 				        AsyncWorld world = AsyncWorld.create(creator);
 				        world.commit();
 				    }
 				});
 				
 			} else {
+				plugin.getLogger().info("FastAsyncWorldEdit not found, loading world [" + creator.name() + "]..");
 				creator.createWorld();
 			}
 			
 		} else {
+			plugin.getLogger().info("Loading world [" + creator.name() + "]...");
 			creator.createWorld();
 		}
 		this.createDefaultWorldConfig(folder, environment, creator, seed);
@@ -155,6 +158,9 @@ public class WorldManager {
 		} else {
 			creator.createWorld();
 		}
+		
+		Bukkit.getWorld(config.getWorldName()).setDifficulty(config.getDifficulty());
+		
 	}
 
 	/**
@@ -343,7 +349,7 @@ public class WorldManager {
 		cfg.set("gamemode", GameMode.SURVIVAL.toString());
 
 		try {
-			plugin.getLogger().info("Saved configuration for World " + world.getName() + " to disk!");
+			Debug.log("Saved configuration for World " + world.getName() + " to disk!");
 			cfg.save(f);
 		} catch (IOException e) {
 			e.printStackTrace();

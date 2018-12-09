@@ -31,13 +31,13 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(new WorldListener(this), this);
 		}
 		this.loadLanguage();
-		this.worldManager = new WorldManager(this);
 		this.getCommand("worldmanagement").setExecutor(new WorldCommands());
+		
+		this.worldManager = new WorldManager(this);
 		this.worldManager.startup();
 		
 		
 		Metrics metrics = new Metrics(this);
-		
         metrics.addCustomChart(new Metrics.SimplePie("loaded_worlds", new Callable<String>() {
             @Override
             public String call() {
