@@ -27,7 +27,6 @@ import crytec.worldmanagement.data.UnloadCheckTimer;
 import crytec.worldmanagement.data.WorldConfiguration;
 import io.netty.util.internal.ThreadLocalRandom;
 import net.crytec.Debug;
-import net.crytec.api.util.F;
 import net.crytec.shaded.org.apache.lang3.EnumUtils;
 
 public class WorldManager {
@@ -177,7 +176,7 @@ public class WorldManager {
 		world.setKeepSpawnInMemory(false);
 		world.setAutoSave(false);
 		world.getPlayers().forEach(p -> {
-			p.sendMessage(F.main("Info", "Die Welt " + F.name(world.getName()) + " wurde deaktiviert. Du wurdest an den Spawnpunkt teleportiert."));
+			p.sendMessage(Language.ERROR_WORLD_UNLOADED.toChatString());
 			p.teleport( Bukkit.getWorlds().get(0).getSpawnLocation());
 		});
 
