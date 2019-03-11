@@ -28,7 +28,6 @@ import crytec.worldmanagement.data.WorldConfiguration;
 import io.netty.util.internal.ThreadLocalRandom;
 import net.crytec.Debug;
 import net.crytec.api.util.F;
-import net.crytec.api.util.UtilPlayer;
 import net.crytec.shaded.org.apache.lang3.EnumUtils;
 
 public class WorldManager {
@@ -179,7 +178,7 @@ public class WorldManager {
 		world.setAutoSave(false);
 		world.getPlayers().forEach(p -> {
 			p.sendMessage(F.main("Info", "Die Welt " + F.name(world.getName()) + " wurde deaktiviert. Du wurdest an den Spawnpunkt teleportiert."));
-			UtilPlayer.teleport(p, Bukkit.getWorlds().get(0).getSpawnLocation());
+			p.teleport( Bukkit.getWorlds().get(0).getSpawnLocation());
 		});
 
 		for (Chunk chunk : world.getLoadedChunks()) {
