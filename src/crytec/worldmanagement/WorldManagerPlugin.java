@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import crytec.worldmanagement.metrics.Metrics;
 import lombok.Getter;
+import net.crytec.api.Versions;
 
 public class WorldManagerPlugin extends JavaPlugin implements Listener {
 
@@ -32,6 +33,11 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
 		}
 		this.loadLanguage();
 		this.getCommand("worldmanagement").setExecutor(new WorldCommands());
+		
+		if (!Versions.requireAPIVersion(this, 328)) {
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		
 		this.worldManager = new WorldManager(this);
 		this.worldManager.startup();
