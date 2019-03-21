@@ -27,9 +27,7 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
-		if (this.getConfig().getBoolean("verbose", true)) {
 		Bukkit.getPluginManager().registerEvents(new WorldListener(this), this);
-		}
 		this.loadLanguage();
 		this.getCommand("worldmanagement").setExecutor(new WorldCommands());		
 		this.worldManager = new WorldManager(this);
