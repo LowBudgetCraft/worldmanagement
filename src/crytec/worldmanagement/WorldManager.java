@@ -26,7 +26,6 @@ import com.google.common.collect.Maps;
 import crytec.worldmanagement.data.UnloadCheckTimer;
 import crytec.worldmanagement.data.WorldConfiguration;
 import io.netty.util.internal.ThreadLocalRandom;
-import net.crytec.Debug;
 import net.crytec.shaded.org.apache.lang3.EnumUtils;
 
 public class WorldManager {
@@ -127,7 +126,6 @@ public class WorldManager {
 		}
 		
 		if (!config.isEnabled()) {
-			Debug.log("Skipped world loading - World is not enabled");
 			return;
 		}
 
@@ -347,7 +345,6 @@ public class WorldManager {
 		cfg.set("gamemode", GameMode.SURVIVAL.toString());
 
 		try {
-			Debug.log("Saved configuration for World " + world.getName() + " to disk!");
 			cfg.save(f);
 		} catch (IOException e) {
 			e.printStackTrace();

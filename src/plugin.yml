@@ -1,6 +1,6 @@
 name: WorldManagement
 main: crytec.worldmanagement.WorldManagerPlugin
-version: 1.0.3
+version: 1.0.4
 author: crysis992
 description: CryTec World Management Plugin
 api-version: 1.13
