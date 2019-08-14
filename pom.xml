@@ -4,20 +4,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.crytec</groupId>
 	<artifactId>WorldManagement</artifactId>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 
 
 	<dependencies>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot</artifactId>
-			<version>1.14.1-R0.1-SNAPSHOT</version>
+			<version>1.13.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.crytec</groupId>
-			<artifactId>CAPI</artifactId>
-			<version>4.0.1</version>
+			<artifactId>phoenix</artifactId>
+			<version>1.0.6</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -28,15 +28,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.6</version>
+			<version>1.18.8</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>local.host</groupId>
-			<artifactId>FastAsyncWorldEdit</artifactId>
-			<version>1.13</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/FastAsyncWorldEdit-bukkit-1.13..jar</systemPath>
 		</dependency>
 	</dependencies>
 
