@@ -183,7 +183,7 @@ public class WorldSettingsGUI implements InventoryProvider {
         player.closeInventory();
         config.setEnabled(true);
         WorldManager.loadExistingWorld(config);
-        player.sendMessage("Die Welt " + config.getWorldName() + " wird aktiviert...");
+        player.sendMessage(Language.GUI_ACTIVATING_WORLD.toChatString().replace("%world%", config.getWorldName()));
       }));
 
     if (config.isEnabled())
