@@ -1,17 +1,25 @@
 package crytec.worldmanagement.guis;
 
+import com.google.common.base.CharMatcher;
 import crytec.worldmanagement.Language;
 import crytec.worldmanagement.WorldManager;
 import crytec.worldmanagement.WorldManagerPlugin;
 import crytec.worldmanagement.data.WorldConfiguration;
+import crytec.worldmanagement.utils.ItemBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.crytec.inventoryapi.SmartInventory;
 import net.crytec.inventoryapi.api.ClickableItem;
+import net.crytec.inventoryapi.api.InventoryContent;
 import net.crytec.inventoryapi.api.InventoryProvider;
+import net.crytec.inventoryapi.api.Pagination;
+import net.crytec.inventoryapi.api.SlotIterator.Type;
+import net.crytec.inventoryapi.api.SlotPos;
+import net.crytec.libs.commons.utils.chatinput.ChatInput;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -27,7 +35,7 @@ public class WorldMainMenu implements InventoryProvider {
   public static final SmartInventory WORLD_MAIN_MENU = SmartInventory.builder().provider(new WorldMainMenu()).size(4).title(Language.GUI_TITLE_MAIN.toString()).build();
 
   @Override
-  public void init(Player player, InventoryContents content) {
+  public void init(Player player, InventoryContent content) {
 
     Pagination pagination = content.pagination();
     ArrayList<ClickableItem> items = new ArrayList<>();
@@ -48,7 +56,7 @@ public class WorldMainMenu implements InventoryProvider {
         builder.lore(Language.GUI_MAIN_DESCRIPTION_DISABLED.getDescriptionArray());
       }
 
-      builder.name("�f" + config.getWorldName());
+      builder.name(ChatColor.WHITE + config.getWorldName());
 
       items.add(ClickableItem.of(builder.build(), click -> {
 
@@ -71,19 +79,16 @@ public class WorldMainMenu implements InventoryProvider {
 
     // Neue Welt erstellen
     content.set(3, 4, ClickableItem.of(new ItemBuilder(Material.EMERALD).name(Language.GUI_GENERAL_NEWWORLD.toString()).build(), click -> {
-      player.closeInventory();
-      player.sendMessage(Language.GUI_CHATPROMOT_ENTERWORLDNAME.toChatString());
-      Phoenix.getAPI().getPlayerChatInput(player, result -> {
 
-        if (WorldManagerPlugin.getInstance().getConfig().getBoolean("alphanumeric only", true) && !StringUtils.isAlphanumeric(result)) {
+      new ChatInput(player, Language.GUI_CHATPROMOT_ENTERWORLDNAME.toChatString(), false, result -> {
+        if (WorldManagerPlugin.getInstance().getConfig().getBoolean("alphanumeric only", true) && !CharMatcher.javaLetterOrDigit().or(CharMatcher.anyOf("_-.")).matchesAllOf(result)) {
           player.sendMessage(Language.ERROR_WRONG_NAME.toChatString());
           return;
         }
 
-        if (Bukkit.getWorld(result) != null) {
+        if (Bukkit.getWorld(result) != null)
           player.sendMessage(Language.ERROR_ALREADYEXIST.toChatString());
-          return;
-        } else if (WorldManagerPlugin.getInstance().getWorldManager().hasWorldConfig(result)) {
+        else if (WorldManagerPlugin.getInstance().getWorldManager().hasWorldConfig(result)) {
           WorldConfiguration config = WorldManagerPlugin.getInstance().getWorldManager().getWorldConfig(result);
           Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> WorldManager.loadExistingWorld(config));
           player.sendMessage(Language.GUI_CHATPROMOT_EXISTS.toChatString());
@@ -94,7 +99,6 @@ public class WorldMainMenu implements InventoryProvider {
               .build().open(player);
       });
     }));
-
-    pagination.addToIterator(content.newIterator(Type.HORIZONTAL, 0, 0));
+    pagination.addToIterator(content.newIterator(Type.HORIZONTAL, SlotPos.of(0, 0)));
   }
 }

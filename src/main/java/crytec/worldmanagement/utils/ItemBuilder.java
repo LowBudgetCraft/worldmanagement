@@ -147,11 +147,4 @@ public class ItemBuilder {
     meta.removeAttributeModifier(attribute);
     return this;
   }
-
-
-  public ItemBuilder setModelData(int data) {
-    meta.setCustomModelData(data);
-    return this;
-  }
-
 }
