@@ -1,6 +1,7 @@
 package crytec.worldmanagement;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
@@ -58,13 +59,28 @@ public enum Language {
 
   GUI_WORLDTYPE_GENERATEINFO("gui.generate.info", "&7Generating a new world..."),
 
+  GUI_CREATOR_ENTER_GENERATOR_BUTTON("path.gui.generate.button", "&7Set World Generator"),
+  GUI_CREATOR_ENTER_GENERATOR_BUTTON_DESC("path.gui.generate.buttonDescription", "&7Currently selected: &6%generator%"),
+  GUI_CREATOR_ENTER_GENERATOR("path.gui.generate.enterGenerator", "&7Please enter a &cvalid &7 generator:"),
+  GUI_CREATOR_ENTER_GENERATOR_ERROR("path.gui.generate.enterGeneratorError", "&cFailed to find a generator with that name."),
+  GUI_CREATOR_RANDOMIZE_SEED("path.gui.generate.randomseed", "&7Randomize the seed."),
+  GUI_CREATOR_RANDOMIZE_SEED_DESCRIPTION("path.gui.generate.randomseedDesc", Arrays.asList("&7Currently selected:", "&b%seed%")),
+
+  GUI_CREATOR_RANDOMIZE_CREATEWORLD("path.gui.generate.createWorld", "&2Create world %world%"),
+  GUI_CREATOR_RANDOMIZE_CREATEWORLD_DESC("path.gui.generate.createWorldDesc", Arrays.asList(
+      "&7Worldname:&6 %world%",
+      "&7Environment:&6 %environment%",
+      "&7WorldType:&6 %type%",
+      "&7Generator:&6 %generator%",
+      "&7Seed:&6 %seed%")),
+
 
   GUI_SETTINGS_TELEPORT("gui.settings.teleport.name", "&2Teleport"),
   GUI_SETTINGS_TELEPORTFEEDBACK("gui.settings.teleport.feedback", "&2You have been teleported to the spawnpoint of %world%"),
   GUI_SETTINGS_TELEPORT_DESC("gui.settings.teleport.description", Arrays.asList("&fTeleport yourself to the", "&fspawnpoint of the selected world")),
 
   GUI_SETTINGS_SPAWNPOINT("gui.settings.spawnpoint.name", "&2Set worldspawn"),
-  GUI_SETTINGS_SPAWNPOINT_DESC("gui.settings.spawnpoint.description", Arrays.asList("&fSet the spawnpoint for the world")),
+  GUI_SETTINGS_SPAWNPOINT_DESC("gui.settings.spawnpoint.description", Collections.singletonList("&fSet the spawnpoint for the world")),
   GUI_SETTINGS_SPAWNPOINT_FEEDBACK("gui.settings.spawnpoint.feedback", "&2The spawnpoint has been set to your current location."),
 
   GUI_SETTINGS_INFORMATION("gui.settings.information.name", "&fInformations:"),
@@ -211,8 +227,9 @@ public enum Language {
 
   @Override
   public String toString() {
-    if (this == Language.TITLE)
+    if (this == Language.TITLE) {
       return ChatColor.translateAlternateColorCodes('&', Language.LANG.getString(path, def)) + " ";
+    }
     return ChatColor.translateAlternateColorCodes('&', Language.LANG.getString(path, def));
   }
 

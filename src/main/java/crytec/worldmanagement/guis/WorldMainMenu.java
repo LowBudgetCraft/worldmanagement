@@ -8,7 +8,6 @@ import crytec.worldmanagement.data.WorldConfiguration;
 import crytec.worldmanagement.utils.ItemBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.crytec.inventoryapi.SmartInventory;
 import net.crytec.inventoryapi.api.ClickableItem;
@@ -25,13 +24,13 @@ import org.bukkit.entity.Player;
 
 public class WorldMainMenu implements InventoryProvider {
 
-  public static <T> void replaceIf(List<T> list, Predicate<T> predicate, T replacement) {
-    for (int i = 0; i < list.size(); ++i) {
-      if (predicate.test(list.get(i))) {
-        list.set(i, replacement);
-      }
-    }
-  }
+//  public static <T> void replaceIf(List<T> list, Predicate<T> predicate, T replacement) {
+//    for (int i = 0; i < list.size(); ++i) {
+//      if (predicate.test(list.get(i))) {
+//        list.set(i, replacement);
+//      }
+//    }
+//  }
 
   public static final SmartInventory WORLD_MAIN_MENU = SmartInventory.builder().provider(new WorldMainMenu()).size(4).title(Language.GUI_TITLE_MAIN.toString()).build();
 
@@ -96,9 +95,9 @@ public class WorldMainMenu implements InventoryProvider {
           manager.createWorld(config);
           player.sendMessage(Language.GUI_CHATPROMOT_EXISTS.toChatString());
         } else {
-          SmartInventory.builder().provider(new EnvironmentMenu(result))
-              .size(1)
-              .title(Language.GUI_TITLE_ENVIRONMENT.toString())
+          SmartInventory.builder().provider(new WorldCreationGUI(player, result))
+              .size(6)
+              .title("World Creation [ " + result + "]..")
               .build().open(player);
         }
       });
