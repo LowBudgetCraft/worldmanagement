@@ -1,6 +1,7 @@
 package crytec.worldmanagement;
 
 import co.aikar.commands.BukkitCommandManager;
+import crytec.worldmanagement.data.WorldConfiguration;
 import crytec.worldmanagement.metrics.Metrics;
 import java.io.File;
 import java.io.IOException;
@@ -8,16 +9,17 @@ import net.crytec.inventoryapi.InventoryAPI;
 import net.crytec.libs.commons.utils.CommonsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Listener;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class WorldManagerPlugin extends JavaPlugin implements Listener {
+public class WorldManagerPlugin extends JavaPlugin {
 
   private static WorldManagerPlugin instance;
   private WorldManager worldManager;
 
   @Override
   public void onLoad() {
+    ConfigurationSerialization.registerClass(WorldConfiguration.class);
     WorldManagerPlugin.instance = this;
     saveResource("config.yml", false);
   }
@@ -26,26 +28,25 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
   public void onEnable() {
     loadLanguage();
 
-    Bukkit.getPluginManager().registerEvents(new WorldListener(this), this);
-    Bukkit.getPluginManager().registerEvents(this, this);
-
     new CommonsAPI(this);
     new InventoryAPI(this);
 
     worldManager = new WorldManager(this);
-    worldManager.startup();
+    Bukkit.getPluginManager().registerEvents(new WorldListener(this, worldManager), this);
+    worldManager.initialize();
 
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("loaded_worlds", () -> {
       int worlds = getWorldManager().getWorldConfigurations().size();
-      if (worlds < 15)
+      if (worlds < 15) {
         return String.valueOf(worlds);
-      else if (worlds > 15 && worlds < 25)
+      } else if (worlds > 15 && worlds < 25) {
         return "15-25";
-      else if (worlds > 25 && worlds < 35)
+      } else if (worlds > 25 && worlds < 35) {
         return "25-35";
-      else
+      } else {
         return "35+ - Thats crazy!";
+      }
     }));
 
     metrics.addCustomChart(new Metrics.SimplePie("worldguard_purge", () -> getConfig().getBoolean("deletion.worldguard", true) ? "Enabled" : "Disabled"));
@@ -70,7 +71,7 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
 
   public void loadLanguage() {
     File lang = new File(getDataFolder(), "language.yml");
-    if (!lang.exists())
+    if (!lang.exists()) {
       try {
         if (!getDataFolder().mkdir() || !lang.createNewFile()) {
           getLogger().warning("Failed to create language file!");
@@ -81,9 +82,10 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
       } catch (IOException e) {
         Bukkit.getPluginManager().disablePlugin(this);
       }
+    }
 
     YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-    for (Language item : Language.values())
+    for (Language item : Language.values()) {
       if (conf.getString(item.getPath()) == null) {
         if (item.isArray()) {
           conf.set(item.getPath(), item.getDefArray());
@@ -91,6 +93,7 @@ public class WorldManagerPlugin extends JavaPlugin implements Listener {
           conf.set(item.getPath(), item.getDefault());
         }
       }
+    }
     Language.setFile(conf);
     try {
       conf.save(lang);

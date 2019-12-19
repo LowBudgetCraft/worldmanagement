@@ -10,19 +10,22 @@ import org.bukkit.event.world.WorldLoadEvent;
 public class WorldListener implements Listener {
 
   private final WorldManagerPlugin plugin;
+  private final WorldManager manager;
 
-  public WorldListener(WorldManagerPlugin plugin) {
+  public WorldListener(WorldManagerPlugin plugin, WorldManager manager) {
     this.plugin = plugin;
+    this.manager = manager;
   }
 
   @EventHandler(ignoreCancelled = true)
   public void forceGameMode(PlayerChangedWorldEvent event) {
-    if (plugin.getWorldManager().hasWorldConfig(event.getPlayer().getWorld())) {
-      GameMode mode = plugin.getWorldManager().getWorldConfig(event.getPlayer().getWorld()).getForcedGameMode();
+    if (manager.hasWorldConfig(event.getPlayer().getWorld())) {
+      GameMode mode = manager.getWorldConfig(event.getPlayer().getWorld()).getForcedGameMode();
 
       if (event.getPlayer().getGameMode() != mode) {
-        if (event.getPlayer().hasPermission("worldmanagement.gamemode.bypass"))
+        if (event.getPlayer().hasPermission("worldmanagement.gamemode.bypass")) {
           return;
+        }
         event.getPlayer().setGameMode(mode);
         event.getPlayer().sendMessage(Language.GENERAL_GAMEMODE_FORCED.toChatString().replace("%gamemode%", mode.toString()));
       }
@@ -31,9 +34,10 @@ public class WorldListener implements Listener {
 
   @EventHandler
   public void onWorldLoad(WorldLoadEvent e) {
-    if (!plugin.getWorldManager().hasWorldConfig(e.getWorld()))
+    if (!manager.hasWorldConfig(e.getWorld())) {
       return;
-    WorldConfiguration worldconfig = plugin.getWorldManager().getWorldConfig(e.getWorld());
+    }
+    WorldConfiguration worldconfig = manager.getWorldConfig(e.getWorld());
 
     e.getWorld().setPVP(worldconfig.isPvPEnabled());
     e.getWorld().setDifficulty(worldconfig.getDifficulty());

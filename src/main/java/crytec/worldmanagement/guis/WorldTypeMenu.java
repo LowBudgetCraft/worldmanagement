@@ -3,7 +3,9 @@ package crytec.worldmanagement.guis;
 import crytec.worldmanagement.Language;
 import crytec.worldmanagement.WorldManager;
 import crytec.worldmanagement.WorldManagerPlugin;
+import crytec.worldmanagement.data.WorldConfiguration;
 import crytec.worldmanagement.utils.ItemBuilder;
+import java.util.concurrent.ThreadLocalRandom;
 import net.crytec.inventoryapi.api.ClickableItem;
 import net.crytec.inventoryapi.api.InventoryContent;
 import net.crytec.inventoryapi.api.InventoryProvider;
@@ -32,25 +34,29 @@ public class WorldTypeMenu implements InventoryProvider {
     content.set(0, 1, ClickableItem.of(new ItemBuilder(Material.GRASS).name(ChatColor.GRAY + WorldType.NORMAL.getName()).build(), e -> {
       player.closeInventory();
       player.sendMessage(Language.GUI_WORLDTYPE_GENERATEINFO.toChatString());
-      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(worldname, environment, WorldType.NORMAL));
+      WorldConfiguration defaultConfig = new WorldConfiguration(worldname, environment, WorldType.NORMAL, "none", ThreadLocalRandom.current().nextLong());
+      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(defaultConfig));
 
     }));
     content.set(0, 3, ClickableItem.of(new ItemBuilder(Material.BEDROCK).name(ChatColor.GRAY + WorldType.FLAT.getName()).build(), e -> {
       player.closeInventory();
       player.sendMessage(Language.GUI_WORLDTYPE_GENERATEINFO.toChatString());
-      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(worldname, environment, WorldType.FLAT));
+      WorldConfiguration defaultConfig = new WorldConfiguration(worldname, environment, WorldType.FLAT, "none", ThreadLocalRandom.current().nextLong());
+      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(defaultConfig));
 
     }));
     content.set(0, 5, ClickableItem.of(new ItemBuilder(Material.MYCELIUM).name(ChatColor.GRAY + WorldType.LARGE_BIOMES.getName()).build(), e -> {
       player.closeInventory();
       player.sendMessage(Language.GUI_WORLDTYPE_GENERATEINFO.toChatString());
-      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(worldname, environment, WorldType.LARGE_BIOMES));
+      WorldConfiguration defaultConfig = new WorldConfiguration(worldname, environment, WorldType.LARGE_BIOMES, "none", ThreadLocalRandom.current().nextLong());
+      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(defaultConfig));
 
     }));
     content.set(0, 7, ClickableItem.of(new ItemBuilder(Material.PHANTOM_MEMBRANE).name(ChatColor.GRAY + WorldType.AMPLIFIED.getName()).build(), e -> {
       player.closeInventory();
       player.sendMessage(Language.GUI_WORLDTYPE_GENERATEINFO.toChatString());
-      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(worldname, environment, WorldType.AMPLIFIED));
+      WorldConfiguration defaultConfig = new WorldConfiguration(worldname, environment, WorldType.AMPLIFIED, "none", ThreadLocalRandom.current().nextLong());
+      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.createWorld(defaultConfig));
     }));
   }
 }

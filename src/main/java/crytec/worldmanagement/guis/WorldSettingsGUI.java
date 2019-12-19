@@ -25,11 +25,12 @@ public class WorldSettingsGUI implements InventoryProvider {
 
   public WorldSettingsGUI(WorldConfiguration config) {
     this.config = config;
-
+    manager = WorldManagerPlugin.getInstance().getWorldManager();
     world = Bukkit.getWorld(config.getWorldName());
 
   }
 
+  private final WorldManager manager;
   private final WorldConfiguration config;
   private final World world;
 
@@ -70,7 +71,7 @@ public class WorldSettingsGUI implements InventoryProvider {
           .lore(Language.GUI_SETTINGS_MOBSPAWN_DESC.getDescriptionArray()
               .stream().map(s -> s.replace("%status%", WorldSettingsGUI.tf(world.getAllowMonsters()))).collect(Collectors.toList()))
           .build(), e -> {
-        world.setSpawnFlags(!world.getAllowMonsters(), world.getAllowAnimals());
+        config.setMonsterspawn(!world.getAllowMonsters());
         reopen(player, content);
       }));
 
@@ -79,7 +80,7 @@ public class WorldSettingsGUI implements InventoryProvider {
           .lore(Language.GUI_SETTINGS_ANIMALSPAWN_DESC.getDescriptionArray()
               .stream().map(s -> s.replace("%status%", WorldSettingsGUI.tf(world.getAllowAnimals()))).collect(Collectors.toList()))
           .build(), e -> {
-        world.setSpawnFlags(world.getAllowMonsters(), !world.getAllowAnimals());
+        config.setAnimalspawn(!world.getAllowAnimals());
         reopen(player, content);
       }));
 
@@ -88,7 +89,7 @@ public class WorldSettingsGUI implements InventoryProvider {
           .lore(Language.GUI_SETTINGS_DIFFICULTY_DESC.getDescriptionArray()
               .stream().map(s -> s.replace("%status%", world.getDifficulty().toString())).collect(Collectors.toList()))
           .build(), e -> {
-        world.setDifficulty(WorldSettingsGUI.getNextDifficulty(world.getDifficulty()));
+        config.setDifficulty(WorldSettingsGUI.getNextDifficulty(world.getDifficulty()));
         reopen(player, content);
       }));
 
@@ -98,7 +99,7 @@ public class WorldSettingsGUI implements InventoryProvider {
               .stream().map(s -> s.replace("%status%", WorldSettingsGUI.tf(world.getPVP()))).collect(Collectors.toList()))
           .setItemFlag(ItemFlag.HIDE_ATTRIBUTES)
           .build(), e -> {
-        world.setPVP(!world.getPVP());
+        config.setPvp(!world.getPVP());
         reopen(player, content);
       }));
 
@@ -107,7 +108,7 @@ public class WorldSettingsGUI implements InventoryProvider {
           .lore(Language.GUI_SETTINGS_SPAWNCHUNKS_DESC.getDescriptionArray()
               .stream().map(s -> s.replace("%status%", WorldSettingsGUI.tf(world.getKeepSpawnInMemory()))).collect(Collectors.toList()))
           .build(), e -> {
-        world.setKeepSpawnInMemory(!world.getKeepSpawnInMemory());
+        config.setKeepSpawnLoaded(!world.getKeepSpawnInMemory());
         reopen(player, content);
       }));
 
@@ -152,15 +153,15 @@ public class WorldSettingsGUI implements InventoryProvider {
 
       content.set(SlotPos.of(0, 4), ClickableItem.of(new ItemBuilder(Material.ARMOR_STAND)
           .name(Language.GUI_SETTINGS_GAMEMODE.toString())
-          .lore(Language.GUI_SETTINGS_GAMEMODE.getDescriptionArray()
+          .lore(Language.GUI_SETTINGS_GAMEMODE_DESCRIPTION.getDescriptionArray()
               .stream().map(s -> s.replace("%status%", config.getForcedGameMode().toString())).collect(Collectors.toList()))
           .build(), e -> {
         config.setGameMode(WorldSettingsGUI.getNextGameMode(config.getForcedGameMode()));
         reopen(player, content);
       }));
 
-      // Welt permanent l�schen
-      if (!WorldManager.isMainWorld(world))
+      // Delete world permanently
+      if (!WorldManager.isMainWorld(world)) {
         content.set(SlotPos.of(4, 8), ClickableItem.of(new ItemBuilder(Material.TNT)
             .name(Language.GUI_SETTINGS_DELETION.toString())
             .lore(Language.GUI_SETTINGS_DELETION_DESCRIPTION.getDescriptionArray())
@@ -173,20 +174,22 @@ public class WorldSettingsGUI implements InventoryProvider {
               .build().open(player);
 
         }));
+      }
     }
 
-    if (!config.isEnabled())
+    if (!config.isEnabled()) {
       content.set(SlotPos.of(4, 1), ClickableItem.of(new ItemBuilder(Material.EMERALD_BLOCK)
           .name(Language.GUI_SETTINGS_ACTIVATEWORLD.toString())
           .lore(Language.GUI_SETTINGS_ACTIVATEWORLD_DESC.getDescriptionArray())
           .build(), e -> {
         player.closeInventory();
         config.setEnabled(true);
-        WorldManager.loadExistingWorld(config);
+        manager.createWorld(config);
         player.sendMessage(Language.GUI_ACTIVATING_WORLD.toChatString().replace("%world%", config.getWorldName()));
       }));
+    }
 
-    if (config.isEnabled())
+    if (config.isEnabled()) {
       content.set(SlotPos.of(4, 2), ClickableItem.of(new ItemBuilder(Material.REDSTONE_BLOCK)
           .name(Language.GUI_SETTINGS_DISABLEWORLD.toString())
           .lore(Language.GUI_SETTINGS_DISABLEWORLD_DESC.getDescriptionArray())
@@ -199,6 +202,7 @@ public class WorldSettingsGUI implements InventoryProvider {
           config.setEnabled(false);
         });
       }));
+    }
 
   }
 

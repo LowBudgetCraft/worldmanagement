@@ -43,8 +43,12 @@
       <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
     </repository>
     <repository>
-      <id>aikar</id>
-      <url>https://repo.aikar.co/content/groups/aikar/</url>
+    <id>aikar</id>
+    <url>https://repo.aikar.co/content/groups/aikar/</url>
+  </repository>
+    <repository>
+      <id>avarioncraft</id>
+      <url>http://repo.avarioncraft.de/repository/maven-releases/</url>
     </repository>
   </repositories>
 

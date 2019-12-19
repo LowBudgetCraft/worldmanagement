@@ -26,10 +26,11 @@ import org.bukkit.entity.Player;
 public class WorldMainMenu implements InventoryProvider {
 
   public static <T> void replaceIf(List<T> list, Predicate<T> predicate, T replacement) {
-    for (int i = 0; i < list.size(); ++i)
+    for (int i = 0; i < list.size(); ++i) {
       if (predicate.test(list.get(i))) {
         list.set(i, replacement);
       }
+    }
   }
 
   public static final SmartInventory WORLD_MAIN_MENU = SmartInventory.builder().provider(new WorldMainMenu()).size(4).title(Language.GUI_TITLE_MAIN.toString()).build();
@@ -86,17 +87,20 @@ public class WorldMainMenu implements InventoryProvider {
           return;
         }
 
-        if (Bukkit.getWorld(result) != null)
+        WorldManager manager = WorldManagerPlugin.getInstance().getWorldManager();
+
+        if (Bukkit.getWorld(result) != null) {
           player.sendMessage(Language.ERROR_ALREADYEXIST.toChatString());
-        else if (WorldManagerPlugin.getInstance().getWorldManager().hasWorldConfig(result)) {
-          WorldConfiguration config = WorldManagerPlugin.getInstance().getWorldManager().getWorldConfig(result);
-          Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> WorldManager.loadExistingWorld(config));
+        } else if (manager.hasWorldConfig(result)) {
+          WorldConfiguration config = manager.getWorldConfig(result);
+          manager.createWorld(config);
           player.sendMessage(Language.GUI_CHATPROMOT_EXISTS.toChatString());
-        } else
+        } else {
           SmartInventory.builder().provider(new EnvironmentMenu(result))
               .size(1)
               .title(Language.GUI_TITLE_ENVIRONMENT.toString())
               .build().open(player);
+        }
       });
     }));
     pagination.addToIterator(content.newIterator(Type.HORIZONTAL, SlotPos.of(0, 0)));
