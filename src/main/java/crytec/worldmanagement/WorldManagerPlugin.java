@@ -29,7 +29,7 @@ public class WorldManagerPlugin extends JavaPlugin {
     loadLanguage();
 
     new CommonsAPI(this);
-    new InventoryAPI(this); // Test
+    new InventoryAPI(this);
 
     worldManager = new WorldManager(this);
     Bukkit.getPluginManager().registerEvents(new WorldListener(this, worldManager), this);
