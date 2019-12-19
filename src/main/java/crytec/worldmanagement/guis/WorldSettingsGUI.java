@@ -154,7 +154,7 @@ public class WorldSettingsGUI implements InventoryProvider {
       content.set(SlotPos.of(0, 4), ClickableItem.of(new ItemBuilder(Material.ARMOR_STAND)
           .name(Language.GUI_SETTINGS_GAMEMODE.toString())
           .lore(Language.GUI_SETTINGS_GAMEMODE_DESCRIPTION.getDescriptionArray()
-              .stream().map(s -> s.replace("%status%", config.getForcedGameMode().toString())).collect(Collectors.toList()))
+              .stream().map(s -> s.replace("%gamemode%", config.getForcedGameMode().toString())).collect(Collectors.toList()))
           .build(), e -> {
         config.setGameMode(WorldSettingsGUI.getNextGameMode(config.getForcedGameMode()));
         reopen(player, content);
