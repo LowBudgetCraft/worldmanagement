@@ -34,7 +34,7 @@ public class WorldManagerPlugin extends JavaPlugin {
     worldManager = new WorldManager(this);
     Bukkit.getPluginManager().registerEvents(new WorldListener(this, worldManager), this);
     worldManager.initialize();
-    //Test
+    //Test1
 
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("loaded_worlds", () -> {
