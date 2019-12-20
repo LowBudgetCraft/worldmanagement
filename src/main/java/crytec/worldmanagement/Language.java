@@ -1,11 +1,14 @@
 package crytec.worldmanagement;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * An enum for requesting strings from the language file.
@@ -14,8 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public enum Language {
   TITLE("title-name", "&2[&fWorldManagement&2]"),
 
-  ERROR_NO_PERM("error.noPermission", "&cYou lack the proper permissions to use this command."),
-  ERROR_NO_WORLD("error.noWorld", "&cThis world does not exist"),
+  ERROR_NO_WORLD_PERM("error.noWorldPermission", "&cYou lack the proper permissions to enter this world."),
   ERROR_ALREADYEXIST("error.exists", "&cThis world already exists"),
   ERROR_WRONG_WORLD("error.wrongworld", "&cYou are in the wrong world for this action."),
   ERROR_WRONG_NAME("error.worldname", "&cThe worldname may only contain alphanumeric characters. (a-z | 0-9)"),
@@ -29,8 +31,6 @@ public enum Language {
 
   GUI_TITLE_MAIN("gui.main.title", "WorldManager - Main Menu"),
   GUI_TITLE_SETTINGS("gui.settings.title", "WorldManager - Settings"),
-  GUI_TITLE_ENVIRONMENT("gui.environment.title", "Select a environment"),
-  GUI_TITLE_WORLDTYPE("gui.worldtype.title", "Select a world type"),
   GUI_TITLE_DELETEION("gui.deletion.title", "&4&lConfirm deletion!"),
 
 
@@ -57,8 +57,6 @@ public enum Language {
   GUI_CHATPROMOT_ENTERWORLDNAME("gui.general.enterworldpromt", "&7Please enter the worldname into the chat:"),
   GUI_CHATPROMOT_EXISTS("gui.general.existsinfo", "&cThere is already a configuration for this worldname. Loading the given world..."),
 
-  GUI_WORLDTYPE_GENERATEINFO("gui.generate.info", "&7Generating a new world..."),
-
   GUI_CREATOR_ENTER_GENERATOR_BUTTON("path.gui.generate.button", "&7Set World Generator"),
   GUI_CREATOR_ENTER_GENERATOR_BUTTON_DESC("path.gui.generate.buttonDescription", "&7Currently selected: &6%generator%"),
   GUI_CREATOR_ENTER_GENERATOR("path.gui.generate.enterGenerator", "&7Please enter a &cvalid &7 generator:"),
@@ -82,6 +80,10 @@ public enum Language {
   GUI_SETTINGS_SPAWNPOINT("gui.settings.spawnpoint.name", "&2Set worldspawn"),
   GUI_SETTINGS_SPAWNPOINT_DESC("gui.settings.spawnpoint.description", Collections.singletonList("&fSet the spawnpoint for the world")),
   GUI_SETTINGS_SPAWNPOINT_FEEDBACK("gui.settings.spawnpoint.feedback", "&2The spawnpoint has been set to your current location."),
+
+  GUI_SETTINGS_PERMISSIN("gui.settings.permission.name", "&2Set permission"),
+  GUI_SETTINGS_PERMISSIN_DESC("gui.settings.permission.description", "&fCurrent permission: &6%permission% (&2Right click to delete)"),
+  GUI_SETTINGS_PERMISSIN_CHATPROMPT("gui.settings.permission.chatprompt", "&7Please enter the new permission node:"),
 
   GUI_SETTINGS_INFORMATION("gui.settings.information.name", "&fInformations:"),
   GUI_SETTINGS_INFORMATION_DESCRIPTION("gui.settings.information.description", Arrays.asList("&fWorld type: &e%worldtype%"
@@ -217,7 +219,7 @@ public enum Language {
    *
    * @param config The config to set.
    */
-  public static void setFile(YamlConfiguration config) {
+  private static void setFile(YamlConfiguration config) {
     Language.LANG = config;
   }
 
@@ -268,5 +270,48 @@ public enum Language {
    */
   public String getPath() {
     return path;
+  }
+
+  private static boolean isValidPath(String path) {
+    return Arrays.stream(values()).anyMatch(lang -> lang.getPath().equals(path));
+  }
+
+  public static void initialize(JavaPlugin plugin) throws IOException {
+    File languageFile = new File(plugin.getDataFolder(), "language.yml");
+    if (!languageFile.exists() && !languageFile.createNewFile()) {
+      plugin.getLogger().severe("Failed to create language.yml");
+      return;
+    }
+
+    YamlConfiguration langCfg = YamlConfiguration.loadConfiguration(languageFile);
+    setFile(langCfg);
+
+    int updated = 0;
+    for (Language entry : values()) {
+      if (!langCfg.isSet(entry.getPath())) {
+        langCfg.set(entry.getPath(), entry.isArray ? entry.getDefArray() : entry.getDefault());
+        updated++;
+      }
+    }
+
+    if (updated > 0) {
+      langCfg.save(languageFile);
+      plugin.getLogger().info("Updated language.yml with " + updated + " new entries!");
+    }
+
+    int removed = 0;
+    for (String key : langCfg.getRoot().getKeys(true)) {
+
+      if (!langCfg.isConfigurationSection(key) && !isValidPath(key)) {
+        plugin.getLogger().info(key + " is no longer a valid language translation...removing");
+        langCfg.set(key, null);
+        removed++;
+      }
+    }
+
+    if (removed > 0) {
+      plugin.getLogger().info("Removed " + removed + " old language entries from your language.yml");
+      langCfg.save(languageFile);
+    }
   }
 }

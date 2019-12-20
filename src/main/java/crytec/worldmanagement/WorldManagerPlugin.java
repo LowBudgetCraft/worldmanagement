@@ -3,12 +3,10 @@ package crytec.worldmanagement;
 import co.aikar.commands.BukkitCommandManager;
 import crytec.worldmanagement.data.WorldConfiguration;
 import crytec.worldmanagement.metrics.Metrics;
-import java.io.File;
 import java.io.IOException;
 import net.crytec.inventoryapi.InventoryAPI;
 import net.crytec.libs.commons.utils.CommonsAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,7 +24,12 @@ public class WorldManagerPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    loadLanguage();
+
+    try {
+      Language.initialize(this);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
     new CommonsAPI(this);
     new InventoryAPI(this);
@@ -68,37 +71,4 @@ public class WorldManagerPlugin extends JavaPlugin {
     return worldManager;
   }
 
-
-  public void loadLanguage() {
-    File lang = new File(getDataFolder(), "language.yml");
-    if (!lang.exists()) {
-      try {
-        if (!getDataFolder().mkdir() || !lang.createNewFile()) {
-          getLogger().warning("Failed to create language file!");
-        }
-        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(lang);
-        defConfig.save(lang);
-        Language.setFile(defConfig);
-      } catch (IOException e) {
-        Bukkit.getPluginManager().disablePlugin(this);
-      }
-    }
-
-    YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-    for (Language item : Language.values()) {
-      if (conf.getString(item.getPath()) == null) {
-        if (item.isArray()) {
-          conf.set(item.getPath(), item.getDefArray());
-        } else {
-          conf.set(item.getPath(), item.getDefault());
-        }
-      }
-    }
-    Language.setFile(conf);
-    try {
-      conf.save(lang);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 }
