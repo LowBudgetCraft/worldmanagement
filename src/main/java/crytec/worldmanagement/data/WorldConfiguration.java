@@ -175,6 +175,10 @@ public class WorldConfiguration implements ConfigurationSerializable {
     this.permission = permission;
   }
 
+  public boolean hasPermission() {
+    return permission != null && !permission.isEmpty() && !permission.equals("none");
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(environment, seed, type, name);

@@ -11,6 +11,7 @@ import net.crytec.inventoryapi.api.ClickableItem;
 import net.crytec.inventoryapi.api.InventoryContent;
 import net.crytec.inventoryapi.api.InventoryProvider;
 import net.crytec.inventoryapi.api.SlotPos;
+import net.crytec.libs.commons.utils.chatinput.ChatInput;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
@@ -158,6 +159,23 @@ public class WorldSettingsGUI implements InventoryProvider {
           .build(), e -> {
         config.setGameMode(WorldSettingsGUI.getNextGameMode(config.getForcedGameMode()));
         reopen(player, content);
+      }));
+
+      content.set(SlotPos.of(1, 4), ClickableItem.of(new ItemBuilder(Material.NAME_TAG)
+          .name(Language.GUI_SETTINGS_PERMISSIN.toString())
+          .lore(Language.GUI_SETTINGS_PERMISSIN_DESC.toString().replace("%permission%", config.getPermission().isEmpty() ? "not set" : config.getPermission()))
+          .build(), e -> {
+
+        if (e.isRightClick()) {
+          config.setPermission("");
+          reopen(player, content);
+          return;
+        }
+
+        new ChatInput(player, Language.GUI_SETTINGS_PERMISSIN_CHATPROMPT.toChatString(), false, input -> {
+          config.setPermission(input);
+          reopen(player, content);
+        });
       }));
 
       // Delete world permanently

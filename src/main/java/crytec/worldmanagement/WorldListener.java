@@ -2,9 +2,11 @@ package crytec.worldmanagement;
 
 import crytec.worldmanagement.data.WorldConfiguration;
 import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
 public class WorldListener implements Listener {
@@ -15,6 +17,23 @@ public class WorldListener implements Listener {
   public WorldListener(WorldManagerPlugin plugin, WorldManager manager) {
     this.plugin = plugin;
     this.manager = manager;
+  }
+
+  @EventHandler
+  public void checkWorldPermission(PlayerTeleportEvent event) {
+    World world = event.getTo().getWorld();
+    if (!manager.hasWorldConfig(world)) {
+      return;
+    }
+    WorldConfiguration config = manager.getWorldConfig(world);
+    if (!config.hasPermission()) {
+      return;
+    }
+
+    if (!event.getPlayer().hasPermission(config.getPermission()) && !event.getPlayer().hasPermission("worldmanagement.permission.bypass")) {
+      event.setCancelled(true);
+      event.getPlayer().sendMessage(Language.ERROR_NO_WORLD_PERM.toChatString());
+    }
   }
 
   @EventHandler(ignoreCancelled = true)
