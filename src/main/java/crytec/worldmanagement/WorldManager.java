@@ -176,8 +176,8 @@ public class WorldManager {
     }
 
     File configFile = new File(plugin.getDataFolder(), "worlds.yml");
-    if (!configFile.exists()) {
-      configFile.createNewFile();
+    if (!configFile.exists() && !configFile.createNewFile()) {
+      plugin.getLogger().warning("Unable to create world storage file - worlds.yml");
     }
 
     YamlConfiguration cfg = YamlConfiguration.loadConfiguration(configFile);

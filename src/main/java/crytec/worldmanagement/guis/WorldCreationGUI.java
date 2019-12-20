@@ -147,7 +147,10 @@ public class WorldCreationGUI implements InventoryProvider {
 
     content.set(3, 5, ClickableItem.of(new ItemBuilder(Material.BEACON).name(Language.GUI_CREATOR_RANDOMIZE_SEED.toString())
         .lore(Language.GUI_CREATOR_RANDOMIZE_SEED_DESCRIPTION.toString().replace("%seed%", String.valueOf(data.getSeed())))
-        .build(), e -> data.setSeed(ThreadLocalRandom.current().nextLong())));
+        .build(), e -> {
+      data.setSeed(ThreadLocalRandom.current().nextLong());
+      reopen(player, content);
+    }));
 
     content.set(5, 4, ClickableItem.of(new ItemBuilder(Material.EMERALD).name(Language.GUI_CREATOR_RANDOMIZE_CREATEWORLD.toString().replace("%world%", worldname))
         .lore(Language.GUI_CREATOR_RANDOMIZE_CREATEWORLD_DESC.getDescriptionArray().stream()
