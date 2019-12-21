@@ -106,7 +106,7 @@
               <shadedPattern>crytec.worldmanagement.libs.commons</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>net.crytec.libs.InventoryAPI</pattern>
+              <pattern>net.crytec.inventoryapi</pattern>
               <shadedPattern>crytec.worldmanagement.libs.inventoryapi</shadedPattern>
             </relocation>
           </relocations>
