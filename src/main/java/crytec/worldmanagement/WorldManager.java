@@ -20,18 +20,9 @@ public class WorldManager {
 
   private final HashMap<String, WorldConfiguration> worldconfigs = Maps.newHashMap();
   private final WorldManagerPlugin plugin;
-  private final File worldFolder;
 
   public WorldManager(WorldManagerPlugin instance) {
     plugin = instance;
-    File f = new File(plugin.getDataFolder() + File.separator + "worlds");
-
-    if (!f.exists() && !f.mkdir()) {
-      instance.getLogger().warning("Failed to create plugin data directory!");
-    }
-
-    worldFolder = f;
-
     loadWorldConfigurations();
     plugin.getLogger().info("All WorldConfigurations loaded, starting WorldLoad..");
   }
