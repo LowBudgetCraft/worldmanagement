@@ -3,7 +3,7 @@ package crytec.worldmanagement.utils;
 import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.UUID;
-import org.apache.commons.lang3.Validate;
+import net.crytec.libs.commons.utils.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
@@ -88,10 +88,11 @@ public class ItemBuilder {
 
 
   public ItemBuilder enchantment(Enchantment enchantment, int level) {
-    if (level <= 0)
+    if (level <= 0) {
       meta.removeEnchant(enchantment);
-    else
+    } else {
       meta.addEnchant(enchantment, level, true);
+    }
     return this;
   }
 
@@ -115,8 +116,9 @@ public class ItemBuilder {
 
 
   public ItemBuilder clearEnchantment() {
-    for (Enchantment e : item.getEnchantments().keySet())
+    for (Enchantment e : item.getEnchantments().keySet()) {
       item.removeEnchantment(e);
+    }
     return this;
   }
 

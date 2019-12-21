@@ -6,8 +6,6 @@
   <artifactId>WorldManagement</artifactId>
   <version>2.0.1</version>
 
-
-
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>
@@ -23,18 +21,12 @@
     <dependency>
       <groupId>net.crytec.libs</groupId>
       <artifactId>InventoryAPI</artifactId>
-      <version>1.1.1</version>
+      <version>1.1.2</version>
     </dependency>
     <dependency>
       <groupId>net.crytec.libs</groupId>
       <artifactId>commons</artifactId>
-      <version>1.2.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons:commons-lang3:3.9</groupId>
-          <artifactId>commons-lang3</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>1.3.0</version>
     </dependency>
   </dependencies>
 
