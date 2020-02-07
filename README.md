@@ -15,7 +15,7 @@ Build with <br>
 `clean install`
 
 ## License
-LuckPerms is licensed under the permissive MIT license. Please see [`LICENSE.txt`](https://gitlab.com/crysis992/worldmanagement/blob/master/LICENSE) for more info.
+WorldManagement is licensed under the permissive MIT license. Please see [`LICENSE.txt`](https://gitlab.com/crysis992/worldmanagement/blob/master/LICENSE) for more info.
 
 ## Contributing
 #### Pull Requests
