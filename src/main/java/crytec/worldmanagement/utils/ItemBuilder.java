@@ -59,24 +59,20 @@ public class ItemBuilder {
     meta = item.getItemMeta();
   }
 
-
   public ItemStack build() {
     item.setItemMeta(meta);
     return item;
   }
-
 
   public ItemBuilder amount(int amount) {
     item.setAmount(amount);
     return this;
   }
 
-
   public ItemBuilder name(String name) {
     meta.setDisplayName(name);
     return this;
   }
-
 
   public ItemBuilder lore(String string) {
     List<String> lore = meta.hasLore() ? meta.getLore() : Lists.newArrayList();
@@ -85,14 +81,12 @@ public class ItemBuilder {
     return this;
   }
 
-
   public ItemBuilder lore(String string, int index) {
     List<String> lore = meta.hasLore() ? meta.getLore() : Lists.newArrayList();
     lore.set(index, string);
     meta.setLore(lore);
     return this;
   }
-
 
   public ItemBuilder lore(List<String> lore) {
     List<String> newLore = meta.hasLore() ? meta.getLore() : Lists.newArrayList();
@@ -101,18 +95,15 @@ public class ItemBuilder {
     return this;
   }
 
-
   public ItemBuilder setUnbreakable(boolean unbreakable) {
     meta.setUnbreakable(unbreakable);
     return this;
   }
 
-
   public ItemBuilder setDurability(int durability) {
     ((Damageable) meta).setDamage(durability);
     return this;
   }
-
 
   public ItemBuilder enchantment(Enchantment enchantment, int level) {
     if (level <= 0) {
@@ -123,24 +114,20 @@ public class ItemBuilder {
     return this;
   }
 
-
   public ItemBuilder enchantment(Enchantment enchantment) {
     meta.addEnchant(enchantment, 1, true);
     return this;
   }
-
 
   public ItemBuilder type(Material material) {
     item.setType(material);
     return this;
   }
 
-
   public ItemBuilder clearLore() {
     meta.setLore(Lists.newArrayList());
     return this;
   }
-
 
   public ItemBuilder clearEnchantment() {
     for (Enchantment e : item.getEnchantments().keySet()) {
@@ -149,9 +136,9 @@ public class ItemBuilder {
     return this;
   }
 
-
   public ItemBuilder setSkullOwner(OfflinePlayer player) {
-    Validate.isTrue(item.getType() == Material.PLAYER_HEAD, "skullOwner() only applicable for skulls!");
+    Validate.isTrue(
+        item.getType() == Material.PLAYER_HEAD, "skullOwner() only applicable for skulls!");
 
     SkullMeta meta = (SkullMeta) this.meta;
     meta.setOwningPlayer(player);
@@ -159,18 +146,17 @@ public class ItemBuilder {
     return this;
   }
 
-
   public ItemBuilder setItemFlag(ItemFlag flag) {
     meta.addItemFlags(flag);
     return this;
   }
 
   public ItemBuilder setAttribute(Attribute attribute, double amount, EquipmentSlot slot) {
-    AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "itembuilder", amount, Operation.ADD_NUMBER, slot);
+    AttributeModifier modifier =
+        new AttributeModifier(UUID.randomUUID(), "itembuilder", amount, Operation.ADD_NUMBER, slot);
     meta.addAttributeModifier(attribute, modifier);
     return this;
   }
-
 
   public ItemBuilder removeAttribute(Attribute attribute) {
     meta.removeAttributeModifier(attribute);

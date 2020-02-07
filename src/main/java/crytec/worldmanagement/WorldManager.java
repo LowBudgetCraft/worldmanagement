@@ -44,7 +44,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class WorldManager {
 
-
   private final HashMap<String, WorldConfiguration> worldconfigs = Maps.newHashMap();
   private final WorldManagerPlugin plugin;
 
@@ -58,9 +57,7 @@ public class WorldManager {
     worldconfigs.values().forEach(this::createWorld);
   }
 
-  /**
-   * Save all worlds configurations and unload them from Bukkit.
-   */
+  /** Save all worlds configurations and unload them from Bukkit. */
   public void shutdown() {
     for (World world : Bukkit.getWorlds()) {
       if (WorldManager.isMainWorld(world) || !hasWorldConfig(world)) {
@@ -79,7 +76,12 @@ public class WorldManager {
 
   public void createWorld(WorldConfiguration worldConfiguration) {
     if (Bukkit.getWorld(worldConfiguration.getWorldName()) != null) {
-      plugin.getLogger().severe("Failed to create a new world - World " + worldConfiguration.getWorldName() + " already exists");
+      plugin
+          .getLogger()
+          .severe(
+              "Failed to create a new world - World "
+                  + worldConfiguration.getWorldName()
+                  + " already exists");
       return;
     }
 
@@ -92,7 +94,8 @@ public class WorldManager {
     creator.type(worldConfiguration.getWorldType());
     creator.seed(worldConfiguration.getSeed());
 
-    if (worldConfiguration.getGenerator() != null && !worldConfiguration.getGenerator().equals("none")) {
+    if (worldConfiguration.getGenerator() != null
+        && !worldConfiguration.getGenerator().equals("none")) {
       creator.generator(worldConfiguration.getGenerator());
     }
 
@@ -102,7 +105,8 @@ public class WorldManager {
     worldConfiguration.setBukkitWorld(world);
 
     world.setDifficulty(worldConfiguration.getDifficulty());
-    world.setSpawnFlags(worldConfiguration.isMobSpawnEnabled(), worldConfiguration.isAnimalSpawnEnabled());
+    world.setSpawnFlags(
+        worldConfiguration.isMobSpawnEnabled(), worldConfiguration.isAnimalSpawnEnabled());
     world.setKeepSpawnInMemory(worldConfiguration.keepSpawnLoaded());
     world.setPVP(worldConfiguration.isPvPEnabled());
   }
@@ -110,15 +114,19 @@ public class WorldManager {
   public void unloadWorld(World world, Consumer<Boolean> done) {
     if (WorldManager.isMainWorld(world)) {
       done.accept(false);
-      throw new SecurityException("Denied the unloading of a world. The main world cannot be unloaded.");
+      throw new SecurityException(
+          "Denied the unloading of a world. The main world cannot be unloaded.");
     }
     getWorldConfig(world).setEnabled(false);
     world.setKeepSpawnInMemory(false);
     world.setAutoSave(false);
-    world.getPlayers().forEach(p -> {
-      p.sendMessage(Language.ERROR_WORLD_UNLOADED.toChatString());
-      p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-    });
+    world
+        .getPlayers()
+        .forEach(
+            p -> {
+              p.sendMessage(Language.ERROR_WORLD_UNLOADED.toChatString());
+              p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            });
 
     for (Chunk chunk : world.getLoadedChunks()) {
       chunk.unload(true);
@@ -145,7 +153,10 @@ public class WorldManager {
     File folder = new File(Bukkit.getWorldContainer(), worldFolderName);
 
     if (Bukkit.getWorld(worldFolderName) != null) {
-      throw new SecurityException("Denied the deletion of the world folder for name " + worldFolderName + ". The world is still in use and loaded!");
+      throw new SecurityException(
+          "Denied the deletion of the world folder for name "
+              + worldFolderName
+              + ". The world is still in use and loaded!");
     }
     try {
       WorldManager.delete(folder);
@@ -153,7 +164,10 @@ public class WorldManager {
       if (plugin.getConfig().getBoolean("deletion.worldguard", true)) {
         plugin.getLogger().info("Trying to remove world folder from WorldGuard...");
 
-        File file = new File(Bukkit.getPluginManager().getPlugin("WorldGuard").getDataFolder(), "worlds" + File.separator + worldFolderName);
+        File file =
+            new File(
+                Bukkit.getPluginManager().getPlugin("WorldGuard").getDataFolder(),
+                "worlds" + File.separator + worldFolderName);
         if (file.exists()) {
           plugin.getLogger().info("Found worldguard folder at path: " + file.getAbsolutePath());
           WorldManager.delete(file);

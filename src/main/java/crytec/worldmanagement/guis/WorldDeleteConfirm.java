@@ -55,18 +55,36 @@ public class WorldDeleteConfirm implements InventoryProvider {
 
     String worldname = world.getName();
 
-    contents.set(SlotPos.of(1, 6), ClickableItem.of(new ItemBuilder(Material.GREEN_WOOL).name(Language.GUI_DELETION_CONFIRM.toString()).build(), e -> {
-      long start = System.currentTimeMillis();
-      Bukkit.getScheduler().runTask(WorldManagerPlugin.getInstance(), () -> manager.unloadWorld(world, done -> {
-        manager.deleteWorldConfiguration(worldname);
-        manager.deleteWorldFolder(worldname);
-        long stop = System.currentTimeMillis();
-        player.sendMessage(Language.GUI_DELETION_FEEDBACK.toChatString().replace("%time%", (stop - start) + " ms"));
-      }));
-      player.closeInventory();
-    }));
+    contents.set(
+        SlotPos.of(1, 6),
+        ClickableItem.of(
+            new ItemBuilder(Material.GREEN_WOOL)
+                .name(Language.GUI_DELETION_CONFIRM.toString())
+                .build(),
+            e -> {
+              long start = System.currentTimeMillis();
+              Bukkit.getScheduler()
+                  .runTask(
+                      WorldManagerPlugin.getInstance(),
+                      () ->
+                          manager.unloadWorld(
+                              world,
+                              done -> {
+                                manager.deleteWorldConfiguration(worldname);
+                                manager.deleteWorldFolder(worldname);
+                                long stop = System.currentTimeMillis();
+                                player.sendMessage(
+                                    Language.GUI_DELETION_FEEDBACK
+                                        .toChatString()
+                                        .replace("%time%", (stop - start) + " ms"));
+                              }));
+              player.closeInventory();
+            }));
 
-    contents.set(SlotPos.of(1, 2), ClickableItem.of(new ItemBuilder(Material.RED_WOOL).name(Language.GUI_DELETION_ABORT.toString()).build(), e -> player.closeInventory()));
-
+    contents.set(
+        SlotPos.of(1, 2),
+        ClickableItem.of(
+            new ItemBuilder(Material.RED_WOOL).name(Language.GUI_DELETION_ABORT.toString()).build(),
+            e -> player.closeInventory()));
   }
 }

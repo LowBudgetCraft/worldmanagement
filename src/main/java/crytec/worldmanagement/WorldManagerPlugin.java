@@ -66,20 +66,26 @@ public class WorldManagerPlugin extends JavaPlugin {
     worldManager.initialize();
 
     Metrics metrics = new Metrics(this);
-    metrics.addCustomChart(new Metrics.SimplePie("loaded_worlds", () -> {
-      int worlds = getWorldManager().getWorldConfigurations().size();
-      if (worlds < 15) {
-        return String.valueOf(worlds);
-      } else if (worlds > 15 && worlds < 25) {
-        return "15-25";
-      } else if (worlds > 25 && worlds < 35) {
-        return "25-35";
-      } else {
-        return "35+ - Thats crazy!";
-      }
-    }));
+    metrics.addCustomChart(
+        new Metrics.SimplePie(
+            "loaded_worlds",
+            () -> {
+              int worlds = getWorldManager().getWorldConfigurations().size();
+              if (worlds < 15) {
+                return String.valueOf(worlds);
+              } else if (worlds > 15 && worlds < 25) {
+                return "15-25";
+              } else if (worlds > 25 && worlds < 35) {
+                return "25-35";
+              } else {
+                return "35+ - Thats crazy!";
+              }
+            }));
 
-    metrics.addCustomChart(new Metrics.SimplePie("worldguard_purge", () -> getConfig().getBoolean("deletion.worldguard", true) ? "Enabled" : "Disabled"));
+    metrics.addCustomChart(
+        new Metrics.SimplePie(
+            "worldguard_purge",
+            () -> getConfig().getBoolean("deletion.worldguard", true) ? "Enabled" : "Disabled"));
 
     BukkitCommandManager cm = new BukkitCommandManager(this);
     cm.registerCommand(new WorldCommands());
@@ -97,5 +103,4 @@ public class WorldManagerPlugin extends JavaPlugin {
   public WorldManager getWorldManager() {
     return worldManager;
   }
-
 }

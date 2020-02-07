@@ -41,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class WorldConfiguration implements ConfigurationSerializable {
 
-
   private final String name;
   private final Environment environment;
   private final WorldType type;
@@ -60,8 +59,8 @@ public class WorldConfiguration implements ConfigurationSerializable {
 
   private WeakReference<World> bukkitWorld;
 
-
-  public WorldConfiguration(String world, Environment environment, WorldType type, String generator, long seed) {
+  public WorldConfiguration(
+      String world, Environment environment, WorldType type, String generator, long seed) {
     name = world;
     this.environment = environment;
     this.type = type;
@@ -90,7 +89,6 @@ public class WorldConfiguration implements ConfigurationSerializable {
   public void setBukkitWorld(World world) {
     bukkitWorld = new WeakReference<>(world);
   }
-
 
   public boolean hasWorldGenerator() {
     return !generator.equals("none");
@@ -132,7 +130,6 @@ public class WorldConfiguration implements ConfigurationSerializable {
   public boolean keepSpawnLoaded() {
     return keepSpawnLoaded;
   }
-
 
   public void setPvp(boolean pvp) {
     if (bukkitWorld != null && bukkitWorld.get() != null) {
@@ -213,10 +210,33 @@ public class WorldConfiguration implements ConfigurationSerializable {
 
   @Override
   public String toString() {
-    return "WorldData [world=" + name + ", seed=" + seed + ", environment=" + environment + ", type=" + type
-        + ", generator=" + generator + ", pvp=" + pvp + ", monsterspawn=" + monsterspawn + ", animalspawn=" + animalspawn
-        + ", difficulty=" + difficulty + ", keepSpawnLoaded=" + keepSpawnLoaded + ", gamemode=" + gamemode + ", forceGameMode="
-        + getForcedGameMode() + ", enabled=" + enabled + "]";
+    return "WorldData [world="
+        + name
+        + ", seed="
+        + seed
+        + ", environment="
+        + environment
+        + ", type="
+        + type
+        + ", generator="
+        + generator
+        + ", pvp="
+        + pvp
+        + ", monsterspawn="
+        + monsterspawn
+        + ", animalspawn="
+        + animalspawn
+        + ", difficulty="
+        + difficulty
+        + ", keepSpawnLoaded="
+        + keepSpawnLoaded
+        + ", gamemode="
+        + gamemode
+        + ", forceGameMode="
+        + getForcedGameMode()
+        + ", enabled="
+        + enabled
+        + "]";
   }
 
   @Override
@@ -228,7 +248,10 @@ public class WorldConfiguration implements ConfigurationSerializable {
       return false;
     }
     WorldConfiguration other = (WorldConfiguration) obj;
-    return environment == other.environment && seed == other.seed && type == other.type && Objects.equals(getWorldName(), other.getWorldName());
+    return environment == other.environment
+        && seed == other.seed
+        && type == other.type
+        && Objects.equals(getWorldName(), other.getWorldName());
   }
 
   @NotNull
@@ -254,6 +277,4 @@ public class WorldConfiguration implements ConfigurationSerializable {
 
     return map;
   }
-
-
 }

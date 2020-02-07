@@ -60,6 +60,13 @@ public class WorldCommands extends BaseCommand {
   @CommandCompletion("@worlds")
   public static void listWorlds(CommandIssuer issuer) {
     issuer.sendMessage(ChatColor.GRAY + "Registered worlds: ");
-    WorldManagerPlugin.getInstance().getWorldManager().getWorldConfigurations().forEach(config -> issuer.sendMessage((config.isEnabled() ? ChatColor.GREEN : ChatColor.RED) + config.getWorldName()));
+    WorldManagerPlugin.getInstance()
+        .getWorldManager()
+        .getWorldConfigurations()
+        .forEach(
+            config ->
+                issuer.sendMessage(
+                    (config.isEnabled() ? ChatColor.GREEN : ChatColor.RED)
+                        + config.getWorldName()));
   }
 }
