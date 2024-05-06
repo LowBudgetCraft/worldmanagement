@@ -93,6 +93,7 @@ public class WorldManager {
     creator.environment(worldConfiguration.getEnvironment());
     creator.type(worldConfiguration.getWorldType());
     creator.seed(worldConfiguration.getSeed());
+    creator.generateStructures(worldConfiguration.structures());
 
     if (worldConfiguration.getGenerator() != null
         && !worldConfiguration.getGenerator().equals("none")) {

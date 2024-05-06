@@ -37,7 +37,6 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.jetbrains.annotations.NotNull;
 
 public class WorldConfiguration implements ConfigurationSerializable {
 
@@ -54,7 +53,7 @@ public class WorldConfiguration implements ConfigurationSerializable {
   private boolean keepSpawnLoaded = true;
   private GameMode gamemode = GameMode.SURVIVAL;
   private String permission = "";
-
+  private boolean structures = true;
   private boolean enabled = true;
 
   private WeakReference<World> bukkitWorld;
@@ -84,6 +83,7 @@ public class WorldConfiguration implements ConfigurationSerializable {
     animalspawn = (boolean) serializedData.get("options.animalspawn");
     keepSpawnLoaded = (boolean) serializedData.get("options.keepspawnloaded");
     permission = (String) serializedData.get("permission");
+    structures = (boolean) serializedData.get("options.structures");
   }
 
   public void setBukkitWorld(World world) {
@@ -94,7 +94,6 @@ public class WorldConfiguration implements ConfigurationSerializable {
     return !generator.equals("none");
   }
 
-  @NotNull
   public String getWorldName() {
     return name;
   }
@@ -129,6 +128,10 @@ public class WorldConfiguration implements ConfigurationSerializable {
 
   public boolean keepSpawnLoaded() {
     return keepSpawnLoaded;
+  }
+
+  public boolean structures() {
+    return structures;
   }
 
   public void setPvp(boolean pvp) {
@@ -199,6 +202,10 @@ public class WorldConfiguration implements ConfigurationSerializable {
     this.permission = permission;
   }
 
+  public void setStructures(boolean structures) {
+    this.structures = structures;
+  }
+
   public boolean hasPermission() {
     return permission != null && !permission.isEmpty() && !permission.equals("none");
   }
@@ -228,6 +235,8 @@ public class WorldConfiguration implements ConfigurationSerializable {
         + animalspawn
         + ", difficulty="
         + difficulty
+        + ", structures="
+        + structures
         + ", keepSpawnLoaded="
         + keepSpawnLoaded
         + ", gamemode="
@@ -254,7 +263,6 @@ public class WorldConfiguration implements ConfigurationSerializable {
         && Objects.equals(getWorldName(), other.getWorldName());
   }
 
-  @NotNull
   @Override
   public Map<String, Object> serialize() {
     LinkedHashMap<String, Object> map = new LinkedHashMap<>();
@@ -274,6 +282,7 @@ public class WorldConfiguration implements ConfigurationSerializable {
     map.put("options.monsterspawn", monsterspawn);
     map.put("options.animalspawn", animalspawn);
     map.put("options.keepspawnloaded", keepSpawnLoaded());
+    map.put("options.structures", structures());
 
     return map;
   }

@@ -68,7 +68,7 @@
     </repository>
     <repository>
       <id>avarioncraft</id>
-      <url>http://repo.avarioncraft.de/repository/maven-public/</url>
+      <url>https://repo.avarioncraft.de/repository/maven-public/</url>
     </repository>
   </repositories>
 
